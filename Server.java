@@ -1,6 +1,7 @@
 import java.net.*;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -14,7 +15,7 @@ public class Server {
 	public Server() {
 		   try {
 			this.s = new ServerSocket(1234);
-			this.clients = Collections.synchronizedMap(new HashMap<>());
+			this.clients = Collections.synchronizedMap(new LinkedHashMap<>());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
