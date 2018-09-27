@@ -10,7 +10,7 @@ TURN: userName
 NEW: [[X,Y],C]
 VOTE: MESSAGE
 VOTE_RESULT: YES/NO
-END: YES
+END: [(K=NAME,V=SCORE),...]
 SCORE: [(K=NAME,V=SCORE), …]
 
 
