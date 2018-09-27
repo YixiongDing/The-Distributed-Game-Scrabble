@@ -77,9 +77,6 @@ public class InputWindow extends JFrame implements ActionListener {
         submitButton.addMouseListener(new MouseAdapter(){
         	@Override
     		public void mouseClicked(MouseEvent e) {
-    			char l =  (char) (65+comboBox.getSelectedIndex());
-    			Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).setText(Character.toString(l));
-    			
 
         	}
     				
@@ -104,10 +101,16 @@ public class InputWindow extends JFrame implements ActionListener {
 			Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).setText(Character.toString(l));
 			
 
-    	
+            Crossword.setStatus("AFTER_INPUT");
+			Crossword.setinputX(Crossword.getX());
+			Crossword.setinputY(Crossword.getY());  
+
 
 		
         this.dispose();
+		PromptWindow2 newFrame = new PromptWindow2("       Click a block with a letter as the start of a word!");
+        newFrame.setVisible(true);
+
 	}
 	}
 
