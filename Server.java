@@ -1,67 +1,59 @@
-import java.net.*;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import javax.net.ServerSocketFactory;
+
 public class Server {
-	private ServerSocket s;
-	private JSONParser parser = new JSONParser();
-	private Map<Integer, ConnectionToClient> clients; 
-	
-	public Server() {
+	public static void main(String[] args) {
 		try {
-			this.s = new ServerSocket(1234);
-			this.clients = Collections.synchronizedMap(new LinkedHashMap<>());
+			int port = Integer.parseInt(args[0]);
+			ServerSocketFactory factory = ServerSocketFactory.getDefault();
+			ServerSocket server = factory.createServerSocket(port);
+			Map<Integer, ConnectionToClient> clients = null;
+			ConcurrentLinkedQueue<String> messages = null;
+			String username = null;
+			int id = 0;
+
+			while (true) {
+				Socket client = server.accept();
+				DataInputStream input = new DataInputStream(client.getInputStream());
+				DataOutputStream output = new DataOutputStream(client.getOutputStream());
+				InputStreamReader isr = new InputStreamReader(input);
+				BufferedReader br = new BufferedReader(isr);
+				username = br.readLine();
+
+				if (checkClient(username, clients)) {
+					System.out.println(username + "has already logged in!");
+					output.writeUTF(username + "has already logged in!");
+				}else {
+					ConnectionToClient newclient = new ConnectionToClient(id, client, username);
+					clients.put(id,newclient);
+					Thread clientThread = new Thread(new HandleClient(newclient, messages));
+					clientThread.start();
+					id += 1;
+				}
+
+				if (id >= 5) {
+					Thread gameThread = new Thread(new Game(clients, messages));
+					gameThread.start();
+				}
+			}
+		} catch (NumberFormatException e) {
+			System.err.println("\"" + args[0] + "\"" + " is not a valid integer");
+			System.exit(1);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// TODO Auto-generated constructor stub
 	}
-	
-	private boolean checkClient(String newclient) {
-		for (ConnectionToClient c : this.clients.values()) {
+
+	private static boolean checkClient(String newclient, Map<Integer, ConnectionToClient> clients) {
+		for (ConnectionToClient c : clients.values()) {
 			if (c.getUserName().equals(newclient)) {
 				return true;
 			}
 		}
 		return false; 
-	}
-
-	public void run() {
-		int id = 1;
-		while(true){
-			Socket clientSocket = null;
-			String username;
-			try {
-				clientSocket=s.accept();
-				InputStream is = clientSocket.getInputStream();
-				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
-				username = br.readLine();
-
-				if (checkClient(username)) {
-					System.out.println(username + "has already logged in!");
-				}else {
-					clients.put(id,new ConnectionToClient(id,clientSocket, username));
-					id += 1;
-				}
-				// Send a string!
-
-				if (id >= 5) {
-					break;
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} // Wait and accept a connection
-			// Get a communication stream associated with the socket
-
-		}
 	}
 }

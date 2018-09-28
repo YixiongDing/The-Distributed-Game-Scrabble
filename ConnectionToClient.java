@@ -22,8 +22,9 @@ public class ConnectionToClient {
 	private BufferedWriter bw;
 	private JSONParser parser = new JSONParser();
 	private String userName;
+	
 	public ConnectionToClient(int id, Socket socket, String userName) {
-		clientId = id;
+		this.clientId = id;
 		this.socket = socket;
 		this.userName = userName;
 		try {
