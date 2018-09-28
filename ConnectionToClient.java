@@ -25,6 +25,7 @@ public class ConnectionToClient {
 	
 	public ConnectionToClient(int id, Socket socket, String userName) {
 		this.clientId = id;
+
 		this.socket = socket;
 		this.userName = userName;
 		try {

@@ -52,7 +52,6 @@ public class Game implements Runnable{
 							if (voteRequest.get("VOTE").equals("YES")) {
 								this.voteYes += 1; 
 							}
-
 							// decide process
 							if (this.votecount >= this.nameList.size()) {
 								if (this.voteYes >= (this.votecount/2)) {
@@ -161,6 +160,7 @@ public class Game implements Runnable{
 		this.voteYes = 0;
 	}
 
+
 	private void sendNextTurn() {
 		this.turn = this.turn +1;
 		String username = this.nameList.get(this.turn%this.nameList.size());
@@ -169,5 +169,3 @@ public class Game implements Runnable{
 		this.sendAll(userturn);
 	}
 
-
-}
