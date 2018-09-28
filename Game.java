@@ -4,7 +4,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,6 +18,7 @@ public class Game implements Runnable{
 	private int voteYes;
 	private int votecount;
 	private int turn;
+	
 	public Game(Map<Integer, ConnectionToClient> clients, ConcurrentLinkedQueue<String> queue) {
 		// TODO Auto-generated constructor stub
 		this.clients = clients.values();
@@ -29,7 +29,6 @@ public class Game implements Runnable{
 	public void run() {
 		this.init();
 		this.sendNextTurn();
-		// 
 		while(true) {
 			String message = this.queue.poll();
 			if (message != null) {
@@ -160,7 +159,6 @@ public class Game implements Runnable{
 		this.voteYes = 0;
 	}
 
-
 	private void sendNextTurn() {
 		this.turn = this.turn +1;
 		String username = this.nameList.get(this.turn%this.nameList.size());
@@ -168,4 +166,4 @@ public class Game implements Runnable{
 		userturn.put("TURN", username);
 		this.sendAll(userturn);
 	}
-
+}

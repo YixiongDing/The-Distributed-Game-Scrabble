@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -25,7 +24,6 @@ public class ConnectionToClient {
 	
 	public ConnectionToClient(int id, Socket socket, String userName) {
 		this.clientId = id;
-
 		this.socket = socket;
 		this.userName = userName;
 		try {
@@ -93,8 +91,6 @@ public class ConnectionToClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}
-		
+		}	
 	}
-	
 }
