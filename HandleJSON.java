@@ -1,4 +1,4 @@
-package Client;
+//package Client;
 
 import org.json.simple.JSONObject;
 import java.io.BufferedReader;
