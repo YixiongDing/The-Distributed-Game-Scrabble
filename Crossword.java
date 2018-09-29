@@ -1,4 +1,4 @@
-//package Client;
+package Client;
 
 //12345
 import java.awt.BorderLayout;
@@ -44,9 +44,6 @@ public class Crossword {
 	private static String word="";
 	
 	
-	private static String command ="";
-	private static String pushString = "";
-	private static JSONObject pushJs;
 	
 	
 	/**
@@ -210,13 +207,15 @@ public class Crossword {
 		//Crossword.setStatus("WAITING");
 
 		//else    				
-
+		
 		;
 		//}
 
 		//
 		//});
-
+		HandleJSON.sendCommand();
+		
+		
 		JButton passButton = new JButton("Pass this Turn");
 
 		JButton scoreButton = new JButton("Scoreboard");
