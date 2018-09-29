@@ -1,3 +1,4 @@
+//package Client;
 
 //12345
 import java.awt.BorderLayout;
@@ -19,6 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import org.json.simple.JSONObject;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.*;
@@ -38,6 +42,13 @@ public class Crossword {
 	private static int inputX=-1;
 	private static int inputY=-1;
 	private static String word="";
+	
+	
+	private static String command ="";
+	private static String pushString = "";
+	private static JSONObject pushJs;
+	
+	
 	/**
 	 * Launch the application.
 	 */
