@@ -2,7 +2,7 @@
 //package Client;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -93,7 +93,8 @@ public class Lobby extends JFrame {
                 bufferRead = myClient.getBufferReader();
                 bufferWrite = myClient.getBufferWrite();
                 try {
-                    bufferWrite.write("user1\n");
+                    Random r = new Random();
+                    bufferWrite.write("user"+r.nextInt(999999)+"\n");
                     bufferWrite.flush();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
@@ -101,7 +102,7 @@ public class Lobby extends JFrame {
                 }
 
                 if (myClient.getReady()) {
-                    new Crossword();
+                    new Crossword(myClient);
                     frame.dispose();
                 }
                 // The connection should be written in Sign in
