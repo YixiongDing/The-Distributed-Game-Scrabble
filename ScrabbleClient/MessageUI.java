@@ -1,4 +1,6 @@
 //Student Name: Wuang Shen, Student ID:716090
+package ScrabbleClient;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;

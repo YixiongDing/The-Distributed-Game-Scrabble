@@ -1,4 +1,4 @@
-//package Client;
+package ScrabbleClient;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,3 +1,5 @@
+package ScrabbleServer;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -27,9 +29,10 @@ public class Server {
 
                 if (checkClient(username, clients)) {
                     System.out.println(username + "has already logged in!");
-                    output.writeUTF(username + "has already logged in!");
+                    output.writeUTF(username + "has already logged in!\n");
                 } else {
-                    System.out.println(username + " connected");//test info
+                    System.out.println(username + " connected");// test info
+                    output.writeUTF("Hello " + username  + "\n");
                     ConnectionToClient newclient = new ConnectionToClient(id, client, username);
                     clients.put(id, newclient);
                     Thread clientThread = new Thread(new HandleClient(newclient, messages, client));

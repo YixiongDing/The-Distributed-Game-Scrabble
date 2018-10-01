@@ -1,3 +1,5 @@
+package ScrabbleServer;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -63,6 +65,7 @@ public class ConnectionToClient {
 	protected boolean sendMessage(JSONObject message) {
 		try {
 			this.bw.write(message.toJSONString()+"\n");
+			System.out.println(message.toJSONString()+"\n");
 			this.bw.flush();
 			return true;
 		} catch (IOException e) {

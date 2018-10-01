@@ -1,4 +1,4 @@
-//package Client;
+package ScrabbleClient;
 
 import org.json.simple.JSONObject;
 import java.io.BufferedReader;
@@ -12,7 +12,7 @@ public class HandleJSON {
 	private static JSONObject jsSendServer;
 	
 	private static String command;
-	private static String commandMsg;
+	private static String commandMsg="";
 	private static JSONObject commandJS;
 	
 	//JSONObject meaningJSON = (JSONObject) parser.parse(bufferRead.readLine());
