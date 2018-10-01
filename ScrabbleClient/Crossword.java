@@ -245,6 +245,7 @@ public class Crossword {
                         bufferWrite.flush();
                         System.out.println(sent.toJSONString());
                         setTurn(false);
+                        setStatus("INPUT");
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
