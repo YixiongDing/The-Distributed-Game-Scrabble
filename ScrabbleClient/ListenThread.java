@@ -4,10 +4,10 @@ import java.io.IOException;
 
 public class ListenThread extends Thread {
     private Thread t;
-    ConnectionToServer c;
+    private ConnectionToServer c;
 
-    ListenThread(MyClient myClient) {
-        c = new ConnectionToServer(myClient);
+    ListenThread(Crossword cw, MyClient myClient) {
+        this.c = new ConnectionToServer(cw, myClient);
     }
 
     public void run() {

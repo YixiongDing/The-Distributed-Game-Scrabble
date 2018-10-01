@@ -92,7 +92,7 @@ public class login {
                     // lob lobbyFrame = new lob();
                     // lobbyFrame.setVisible(true);
                     Crossword c = new Crossword(myClient);
-                    ListenThread t = new ListenThread(myClient);
+                    ListenThread t = new ListenThread(c, myClient);
                     t.start();
                     frame.dispose();
                 }

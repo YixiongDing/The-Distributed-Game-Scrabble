@@ -54,6 +54,17 @@ public class Crossword {
     private static BufferedWriter bufferWrite;
     private static MyClient myClient;
     private JSONParser parser = new JSONParser();
+
+    private static boolean turn = false;
+
+    public static void setTurn(boolean a) {
+        turn = a;
+    }
+
+    public static boolean getTurn() {
+        return turn;
+    }
+
     /**
      * Launch the application.
      */
@@ -163,21 +174,9 @@ public class Crossword {
         this.bufferRead = myClient.getBufferReader();
         this.bufferWrite = myClient.getBufferWrite();
         initialize();
-        
-        
+
     }
-    
-    private static void listenToServer() throws IOException {
-        String content = new String();
-        while ((content = bufferRead.readLine()) != null) {
-            System.out.println("Server:" + content);
-            Scanner scan = new Scanner(System.in);
-            String sendMsg = scan.next();
-            PrintWriter pw = new PrintWriter(myClient.getSocket().getOutputStream());
-            pw.println(sendMsg);
-            pw.flush();
-        }
-    }
+
     /**
      * Initialize the contents of the frame.
      */
@@ -186,8 +185,8 @@ public class Crossword {
         f.setBounds(100, 100, 800, 800);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().setLayout(new BorderLayout());
-        f.setTitle(myClient.getUserName()+"'s game");
-        
+        f.setTitle(myClient.getUserName() + "'s game");
+
         JPanel container = new JPanel(new FlowLayout());
         final CrosswordPanel panel = new CrosswordPanel();
         container.add(panel);
@@ -222,27 +221,20 @@ public class Crossword {
          */
         JButton voteButton = new JButton("Initiate a Vote");
         voteButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 // JSONObject vote = new JSONObject();
                 // vote.put("WORD", textField.getText());
                 // vote.put("COMMAND", "ADD");
                 // vote.put("MEANING",textArea.getText());
-//                 bufferWrite.write(text.toJSONString()+"\n");
-//                 bufferWrite.write("ADD"+"$$$"+textField.getText()+"$$$"+textArea.getText()+"\n");
+                // bufferWrite.write(text.toJSONString()+"\n");
+                // bufferWrite.write("ADD"+"$$$"+textField.getText()+"$$$"+textArea.getText()+"\n");
                 // bufferWrite.flush();
                 // bufferWrite.write(arg0);
                 //
-                try {
-                    bufferWrite.write("test\n");
-                    bufferWrite.flush();
-                    System.out.println("send test");
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                if (turn) {
+                    System.out.println(getWord());
                 }
-                
             }
 
         });
@@ -266,7 +258,7 @@ public class Crossword {
 
         //
         // });
-//        HandleJSON.sendCommand();
+        // HandleJSON.sendCommand();
 
         JButton passButton = new JButton("Pass this Turn");
 
@@ -281,7 +273,7 @@ public class Crossword {
         f.setSize(1500, 800);
         f.setLocationRelativeTo(null);
         f.setVisible(true);
-        
+
     }
 
     private static void generate(CrosswordPanel panel) {
@@ -341,49 +333,52 @@ public class Crossword {
                                 int yco = ind % 20;
                                 Crossword.setX(xco);
                                 Crossword.setY(yco);
-
+                                boolean turn = getTurn();
+                                System.out.println("Turn:" + turn);
                                 boolean isEmpty = Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText()
                                         .equals(String.valueOf("\u0020"));
 
-                                if (Crossword.getStatus().equals("INPUT") && isEmpty) {
+                                if (turn && Crossword.getStatus().equals("INPUT") && isEmpty) {
                                     InputWindow newFrame = new InputWindow(cr, myClient);
                                     newFrame.setVisible(true);
 
                                 }
 
-                                else if (Crossword.getStatus().equals("INPUT") && !isEmpty) {
+                                else if (turn && Crossword.getStatus().equals("INPUT") && !isEmpty) {
                                     PromptWindow newFrame = new PromptWindow("You can only type in an empty block!");
                                     newFrame.setVisible(true);
                                 }
 
-                                else if (Crossword.getStatus().equals("AFTER_INPUT") && isEmpty) {
+                                else if (turn && Crossword.getStatus().equals("AFTER_INPUT") && isEmpty) {
                                     PromptWindow newFrame = new PromptWindow("    Choose a block which has a letter!");
                                     newFrame.setVisible(true);
                                 }
 
-                                else if (Crossword.getStatus().equals("AFTER_INPUT") && !isEmpty) {
+                                else if (turn && Crossword.getStatus().equals("AFTER_INPUT") && !isEmpty) {
                                     PromptWindow newFrame = new PromptWindow("    Click the last letter of the word!");
                                     newFrame.setVisible(true);
                                     Crossword.CrosswordPanel.textFields.get(Crossword.getInd())
                                             .setBackground(Color.yellow);
                                     Crossword.setStatus("AFTER_FIRST_CLICK");
-                                } else if (Crossword.getStatus().equals("AFTER_FIRST_CLICK") && isEmpty) {
+                                } else if (turn && Crossword.getStatus().equals("AFTER_FIRST_CLICK") && isEmpty) {
                                     PromptWindow newFrame = new PromptWindow("    Choose a block which has a letter!");
                                     newFrame.setVisible(true);
                                 }
 
-                                else if (Crossword.getStatus().equals("AFTER_FIRST_CLICK") && !isEmpty) {
-                                    PromptWindow newFrame = new PromptWindow(" Press Initiate a vote to start vote!");
-                                    newFrame.setVisible(true);
-                                    Crossword.CrosswordPanel.textFields.get(Crossword.getInd())
-                                            .setBackground(Color.yellow);
-                                    Crossword.setStatus("AFTER_FIRST_CLICK");
-                                    Crossword.setlastX(-1);
-                                    Crossword.setlastY(-1);
+                                // else if (turn && Crossword.getStatus().equals("AFTER_FIRST_CLICK") &&
+                                // !isEmpty) {
+                                // PromptWindow newFrame = new PromptWindow(" Press Initiate a vote to start
+                                // vote!");
+                                // newFrame.setVisible(true);
+                                // Crossword.CrosswordPanel.textFields.get(Crossword.getInd())
+                                // .setBackground(Color.yellow);
+                                // Crossword.setStatus("AFTER_FIRST_CLICK");
+                                // Crossword.setlastX(-1);
+                                // Crossword.setlastY(-1);
+                                //
+                                // }
 
-                                }
-
-                                else if (Crossword.getStatus().equals("AFTER_FIRST_CLICK") && !isEmpty) {
+                                else if (turn && Crossword.getStatus().equals("AFTER_FIRST_CLICK") && !isEmpty) {
                                     int inputX = Crossword.getinputX();
                                     int inputY = Crossword.getinputY();
                                     int lastX = Crossword.getlastX();
