@@ -19,7 +19,7 @@ import org.json.simple.parser.JSONParser;
 
 import javax.swing.JLabel;
 
-public class login {
+public class Login {
 
     private JFrame frame;
     private JTextField textField;
@@ -35,7 +35,7 @@ public class login {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    login window = new login();
+                    Login window = new Login();
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -48,7 +48,7 @@ public class login {
     /**
      * Create the application.
      */
-    public login() {
+    public Login() {
         initialize();
     }
 
@@ -105,7 +105,6 @@ public class login {
         btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
-
             }
         });
         btnCancel.setBounds(219, 137, 93, 23);

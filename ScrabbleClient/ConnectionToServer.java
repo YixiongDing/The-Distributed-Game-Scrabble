@@ -39,6 +39,19 @@ public class ConnectionToServer {
                 if (serverJSON.get("TURN").equals(myClient.getUserName())) {
                     cw.setTurn(true);
                 }
+            } else if (serverJSON.containsKey("VOTE")) {
+                String voteWord = (String) serverJSON.get("VOTE");
+                Vote v = new Vote(voteWord, myClient);
+                v.setVisible(true);
+
+            } else if (serverJSON.containsKey("COMMAND")) {
+                if (serverJSON.get("COMMAND").equals("NEW")) {
+                    JSONObject newLetter = (JSONObject) serverJSON.get("MESSAGE");
+                    int index = ((Long) newLetter.get("INDEX")).intValue();
+                    String letter = (String) newLetter.get("LETTER");
+                    Crossword.CrosswordPanel.textFields.get(index).setText(letter);
+                }
+
             }
         } catch (ParseException e) {
             // TODO Auto-generated catch block

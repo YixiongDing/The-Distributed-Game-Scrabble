@@ -233,7 +233,22 @@ public class Crossword {
                 // bufferWrite.write(arg0);
                 //
                 if (turn) {
-                    System.out.println(getWord());
+                    try {
+                        JSONObject sent = new JSONObject();
+                        sent.put("COMMAND", "VOTING");
+//                        JSONObject word = new JSONObject();
+//                        word.put("WORD", getWord());
+                        JSONObject message = new JSONObject();
+                        message.put("INIT", getWord());
+                        sent.put("MESSAGE", message);
+                        bufferWrite.write(sent.toJSONString()+"\n");
+                        bufferWrite.flush();
+                        System.out.println(sent.toJSONString());
+                        setTurn(false);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
             }
 
@@ -333,8 +348,7 @@ public class Crossword {
                                 int yco = ind % 20;
                                 Crossword.setX(xco);
                                 Crossword.setY(yco);
-                                boolean turn = getTurn();
-                                System.out.println("Turn:" + turn);
+
                                 boolean isEmpty = Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText()
                                         .equals(String.valueOf("\u0020"));
 
@@ -365,18 +379,17 @@ public class Crossword {
                                     newFrame.setVisible(true);
                                 }
 
-                                // else if (turn && Crossword.getStatus().equals("AFTER_FIRST_CLICK") &&
-                                // !isEmpty) {
-                                // PromptWindow newFrame = new PromptWindow(" Press Initiate a vote to start
-                                // vote!");
-                                // newFrame.setVisible(true);
-                                // Crossword.CrosswordPanel.textFields.get(Crossword.getInd())
-                                // .setBackground(Color.yellow);
-                                // Crossword.setStatus("AFTER_FIRST_CLICK");
-                                // Crossword.setlastX(-1);
-                                // Crossword.setlastY(-1);
-                                //
-                                // }
+                                else if (turn && Crossword.getStatus().equals("AFTER_FIRST_CLICK") && !isEmpty) {
+                                    PromptWindow newFrame = new PromptWindow(" Press Initiate a vote to start vote!");
+                                    newFrame.setVisible(true);
+                                    Crossword.CrosswordPanel.textFields.get(Crossword.getInd())
+                                            .setBackground(Color.yellow);
+                                    Crossword.setWord(
+                                            Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText());
+                                    Crossword.setStatus("AFTER_FIRST_CLICK");
+                                    Crossword.setlastX(-1);
+                                    Crossword.setlastY(-1);
+                                }
 
                                 else if (turn && Crossword.getStatus().equals("AFTER_FIRST_CLICK") && !isEmpty) {
                                     int inputX = Crossword.getinputX();
@@ -384,9 +397,19 @@ public class Crossword {
                                     int lastX = Crossword.getlastX();
                                     int lastY = Crossword.getlastY();
                                     int index = -1;
+
+                                    System.out.println(inputX);
+                                    System.out.println(inputY);
+                                    System.out.println(lastX);
+                                    System.out.println(lastY);
+
                                     // only one point is chosen
                                     if (xco == inputX && xco == lastX && yco == lastY && yco == inputY) {
                                         Crossword.setWord(
+                                                Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText());
+                                        System.out.println(Crossword.getInd());
+                                        System.out.println(Crossword.CrosswordPanel.textFields.get(Crossword.getInd()));
+                                        System.out.println(
                                                 Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText());
                                         index = 0;
                                     }
@@ -407,7 +430,8 @@ public class Crossword {
                                             Crossword.CrosswordPanel.textFields.get(index).setBackground(Color.yellow);
                                         }
 
-                                    } else if (xco == inputX && xco == lastX && inputY <= lastY && yco <= inputY) {
+                                    } else if (turn && xco == inputX && xco == lastX && inputY <= lastY
+                                            && yco <= inputY) {
                                         for (int i = yco; i <= lastY; i++) {
                                             index = (xco - 1) * 20 + i - 1;
                                             String s = Crossword.CrosswordPanel.textFields.get(index).getText();
@@ -425,7 +449,8 @@ public class Crossword {
 
                                     }
 
-                                    else if (yco == inputY && yco == lastY && lastX <= inputX && xco >= inputX) {
+                                    else if (turn && yco == inputY && yco == lastY && lastX <= inputX
+                                            && xco >= inputX) {
                                         for (int i = lastX; i <= xco; i++) {
                                             index = (xco - 1) * 20 + i - 1;
                                             String s = Crossword.CrosswordPanel.textFields.get(index).getText();
@@ -441,7 +466,8 @@ public class Crossword {
                                             Crossword.CrosswordPanel.textFields.get(index).setBackground(Color.yellow);
                                         }
 
-                                    } else if (yco == inputY && yco == lastY && lastX >= inputX && xco <= inputX) {
+                                    } else if (turn && yco == inputY && yco == lastY && lastX >= inputX
+                                            && xco <= inputX) {
                                         for (int i = xco; i <= lastX; i++) {
                                             index = (xco - 1) * 20 + i - 1;
                                             String s = Crossword.CrosswordPanel.textFields.get(index).getText();
@@ -459,14 +485,14 @@ public class Crossword {
 
                                     }
 
-                                    if (index > -1) {
+                                    if (turn && index > -1) {
                                         PromptWindow newFrame = new PromptWindow(
                                                 " Press Initiate a vote to start vote!");
                                         newFrame.setVisible(true);
                                         Crossword.CrosswordPanel.textFields.get(Crossword.getInd())
                                                 .setBackground(Color.yellow);
                                         Crossword.setStatus("AFTER_SECOND_CLICK");
-                                    } else if (index == -1) {
+                                    } else if (turn && index == -1) {
                                         PromptWindow newFrame = new PromptWindow(
                                                 " Input point not on a line! Restart!");
                                         newFrame.setVisible(true);
@@ -474,9 +500,7 @@ public class Crossword {
                                                 .setBackground(Color.yellow);
                                         Crossword.setStatus("AFTER_INPUT");
                                         Crossword.setColor();
-
                                     }
-
                                 }
 
                             }

@@ -35,21 +35,22 @@ public class Game implements Runnable {
             String message = this.queue.poll();
             if (message != null) {
                 try {
-//                    System.out.println(message);
+                    // System.out.println(message);
                     JSONObject messageJSON = (JSONObject) parser.parse(message);
                     String username = (String) messageJSON.get("USER");
                     JSONObject messageUser = (JSONObject) messageJSON.get("MESSAGE");
                     String command = (String) messageJSON.get("COMMAND");
                     System.out.println(command);
-                    System.out.println(username + ":" + command + "," + messageUser);//test info
+                    System.out.println(username + ":" + command + "," + messageUser);// test info
                     if (command.equals("NEW")) {
                         // new
-                        JSONObject sendmessage = messageJSON;//(JSONObject) messageUser.get("NEW");
+                        JSONObject sendmessage = messageJSON;// (JSONObject) messageUser.get("NEW");
                         this.sendAllFromOne(sendmessage, username);
                         this.initPassCount();
                         // send turn to all
                     } else if (command.equals("VOTING")) {
-                        JSONObject voteRequest = (JSONObject) messageUser.get("VOTING");
+                        // JSONObject voteRequest = (JSONObject) messageUser.get("VOTING");
+                        JSONObject voteRequest = messageUser;
                         // vote process
                         if (voteRequest.containsKey("VOTE")) {
                             this.votecount += 1;

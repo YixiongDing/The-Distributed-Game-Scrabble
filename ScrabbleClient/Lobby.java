@@ -138,7 +138,7 @@ public class Lobby extends JFrame {
         btnStartGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myClient = new MyClient("localhost", String.valueOf(2222));
+                myClient = new MyClient("localhost", String.valueOf(2222),"user1");
 
                 // MyClient myClient = new MyClient(textField.getText(), textField2.getText());
                 myClient.buildBufferRead();
