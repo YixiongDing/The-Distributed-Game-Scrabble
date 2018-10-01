@@ -64,8 +64,8 @@ public class ConnectionToClient {
 	
 	protected boolean sendMessage(JSONObject message) {
 		try {
+		    System.out.println(message.toJSONString());//test info
 			this.bw.write(message.toJSONString()+"\n");
-			System.out.println(message.toJSONString()+"\n");
 			this.bw.flush();
 			return true;
 		} catch (IOException e) {

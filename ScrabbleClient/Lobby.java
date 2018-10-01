@@ -60,6 +60,7 @@ public class Lobby extends JFrame {
                 }
             }
         });
+        
         // while (true) {
         // if (bufferRead != null) {
         // System.out.println(1);
@@ -79,19 +80,20 @@ public class Lobby extends JFrame {
         // }
         // }
         // }
-        // while (true) {
-        // try {
-        // listen();
-        // } catch (IOException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
-        // }
+        while (true) {
+            try {
+                listen();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
 
     }
 
     private static void listen() throws IOException {
         String content = new String();
+        
         while ((content = bufferRead.readLine()) != null) {
             System.out.println("Server:" + content);
             Scanner scan = new Scanner(System.in);

@@ -29,10 +29,12 @@ public class HandleClient implements Runnable {
             while (true) {
                 if (br != null) {
                     try {
-                        JSONObject messageJSON = (JSONObject) parser.parse(br);
+//                        System.out.println(br.readLine());
+                        JSONObject messageJSON = (JSONObject) parser.parse(br.readLine());
                         messageJSON.put("USER", client.getUserName());
                         String messageString = messageJSON.toJSONString();
                         messages.add(messageString);
+//                        System.out.println(messageString);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

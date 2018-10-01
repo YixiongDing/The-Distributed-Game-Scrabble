@@ -40,7 +40,7 @@ public class Server {
                     id += 1;
                 }
 
-                if (id >= 5) {
+                if (id >= 2) {
                     Thread gameThread = new Thread(new Game(clients, messages));
                     gameThread.start();
                 }

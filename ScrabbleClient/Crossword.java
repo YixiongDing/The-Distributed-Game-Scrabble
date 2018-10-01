@@ -14,7 +14,9 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -164,7 +166,18 @@ public class Crossword {
         
         
     }
-
+    
+    private static void listenToServer() throws IOException {
+        String content = new String();
+        while ((content = bufferRead.readLine()) != null) {
+            System.out.println("Server:" + content);
+            Scanner scan = new Scanner(System.in);
+            String sendMsg = scan.next();
+            PrintWriter pw = new PrintWriter(myClient.getSocket().getOutputStream());
+            pw.println(sendMsg);
+            pw.flush();
+        }
+    }
     /**
      * Initialize the contents of the frame.
      */
@@ -173,7 +186,8 @@ public class Crossword {
         f.setBounds(100, 100, 800, 800);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().setLayout(new BorderLayout());
-
+        f.setTitle(myClient.getUserName()+"'s game");
+        
         JPanel container = new JPanel(new FlowLayout());
         final CrosswordPanel panel = new CrosswordPanel();
         container.add(panel);
@@ -215,11 +229,20 @@ public class Crossword {
                 // vote.put("WORD", textField.getText());
                 // vote.put("COMMAND", "ADD");
                 // vote.put("MEANING",textArea.getText());
-                // bufferWrite.write(text.toJSONString()+"\n");
-                //// bufferWrite.write("ADD"+"$$$"+textField.getText()+"$$$"+textArea.getText()+"\n");
+//                 bufferWrite.write(text.toJSONString()+"\n");
+//                 bufferWrite.write("ADD"+"$$$"+textField.getText()+"$$$"+textArea.getText()+"\n");
                 // bufferWrite.flush();
                 // bufferWrite.write(arg0);
                 //
+                try {
+                    bufferWrite.write("test\n");
+                    bufferWrite.flush();
+                    System.out.println("send test");
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                
             }
 
         });
