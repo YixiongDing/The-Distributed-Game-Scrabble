@@ -548,6 +548,8 @@ public class Crossword {
                                         PromptWindow newFrame = new PromptWindow(
                                                 " Input point not on the line!");
                                         newFrame.setVisible(true);
+                                        Crossword.setWord("");
+
                                         setColorAll();
                                         Crossword.setStatus("AFTER_INPUT");
                                     }
