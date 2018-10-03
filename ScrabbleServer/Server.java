@@ -1,3 +1,4 @@
+package ScrabbleServer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -38,7 +39,7 @@ public class Server {
                     id += 1;
                 }
 
-                if (id >= 2) {
+                if (id >= 3) {
                     Thread gameThread = new Thread(new Game(clients, messages));
                     gameThread.start();
                 }

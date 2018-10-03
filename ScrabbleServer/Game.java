@@ -171,7 +171,7 @@ public class Game implements Runnable {
     }
 
     private void updateScore(String user, int score){
-    	this.scoreboard.put(user, this.scoreboard.get(user) + score);
+    	this.scoreboard.put(user, Integer.valueOf(this.scoreboard.get(user).toString()) + score);
     }
 
     private void sendNextTurn() {
