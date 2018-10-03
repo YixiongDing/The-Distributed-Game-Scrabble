@@ -466,6 +466,7 @@ public class Crossword {
                                                 newFrame.setVisible(true);
                                                 index=-2;
                                                 setColorAll();
+                                        Crossword.setWord("");
 
                                                 break;
                                             }
@@ -485,6 +486,7 @@ public class Crossword {
                                                 newFrame.setVisible(true);
                                                 index=-2;
                                                 setColorAll();
+                                        Crossword.setWord("");
 
                                                 break;
                                             }
@@ -510,6 +512,8 @@ public class Crossword {
                                                 newFrame.setVisible(true);
                                                 index=-2;
                                                 setColorAll();
+                                                                                        Crossword.setWord("");
+
                                                 break;
                                             }
                                             Crossword.setWord(Crossword.getWord() + s);
@@ -529,6 +533,8 @@ public class Crossword {
                                                 newFrame.setVisible(true);
                                                 index=-2;
                                                 setColorAll();
+                                                                                        Crossword.setWord("");
+
                                                 break;
                                             }
                                             Crossword.setWord(Crossword.getWord() + s);
