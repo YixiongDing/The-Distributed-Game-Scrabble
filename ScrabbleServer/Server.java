@@ -1,5 +1,3 @@
-package ScrabbleServer;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -18,6 +16,7 @@ public class Server {
             ConcurrentLinkedQueue<String> messages = new ConcurrentLinkedQueue<String>();
             String username = null;
             int id = 0;
+            System.out.println("Server is up!");
 
             while (true) {
                 Socket client = server.accept();
@@ -31,11 +30,10 @@ public class Server {
                     System.out.println(username + "has already logged in!");
                     output.writeUTF(username + "has already logged in!\n");
                 } else {
-                    System.out.println(username + " connected");// test info
-                    output.writeUTF("Hello " + username  + "\n");
+                    System.out.println(username + " connected");
                     ConnectionToClient newclient = new ConnectionToClient(id, client, username);
                     clients.put(id, newclient);
-                    Thread clientThread = new Thread(new HandleClient(newclient, messages, client));
+                    Thread clientThread = new Thread(new HandleClient(newclient, messages));
                     clientThread.start();
                     id += 1;
                 }
