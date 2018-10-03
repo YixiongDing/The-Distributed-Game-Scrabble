@@ -1,4 +1,3 @@
-
 package ScrabbleClient;
 
 import java.awt.EventQueue;
@@ -41,7 +40,6 @@ public class Login {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-             
             }
         });
 
@@ -76,7 +74,7 @@ public class Login {
                 // Random r = new Random();
                 // String userName = "user" + r.nextInt(999999);
                 String userName = textField.getText();
-                myClient = new MyClient("localhost", String.valueOf(3333), userName);
+                myClient = new MyClient("localhost", String.valueOf(12346), userName);
                 // MyClient myClient = new MyClient(textField.getText(), textField2.getText());
                 myClient.buildBufferRead();
                 myClient.buildBufferWrite();
@@ -123,4 +121,3 @@ public class Login {
     }
 
 }
-

@@ -177,7 +177,7 @@ public class Crossword {
     private void initialize() {
         f = new JFrame();
         f.setBounds(100, 100, 800, 800);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.getContentPane().setLayout(new BorderLayout());
         f.setTitle(myClient.getUserName() + "'s game");
 
@@ -226,7 +226,7 @@ public class Crossword {
                 // bufferWrite.flush();
                 // bufferWrite.write(arg0);
                 //
-                if (turn) {
+                if (turn&&getStatus().equals("AFTER_SECOND_CLICK")) {
 
                     try {
                         JSONObject sent = new JSONObject();
@@ -287,7 +287,7 @@ public class Crossword {
                 // bufferWrite.flush();
                 // bufferWrite.write(arg0);
                 //
-                if (turn) {
+                if (turn&&getStatus().equals("INPUT")||turn &&getStatus().equals("AFTER_INPUT")) {
                     Crossword.setWord("");
 
                     try {
@@ -313,6 +313,39 @@ public class Crossword {
         });
 
         JButton scoreButton = new JButton("Scoreboard");
+        scoreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // JSONObject vote = new JSONObject();
+                // vote.put("WORD", textField.getText());
+                // vote.put("COMMAND", "ADD");
+                // vote.put("MEANING",textArea.getText());
+                // bufferWrite.write(text.toJSONString()+"\n");
+                // bufferWrite.write("ADD"+"$$$"+textField.getText()+"$$$"+textArea.getText()+"\n");
+                // bufferWrite.flush();
+                // bufferWrite.write(arg0);
+                //
+
+                    try {
+                        JSONObject sent = new JSONObject();
+                        sent.put("COMMAND", "SCORE");
+//                        JSONObject word = new JSONObject();
+//                        word.put("WORD", getWord());
+                        JSONObject message = new JSONObject();
+                        message.put("SCORE", "YES");
+                        sent.put("MESSAGE", message);
+                        bufferWrite.write(sent.toJSONString()+"\n");
+                        bufferWrite.flush();
+                        System.out.println(sent.toJSONString());
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
+            
+
+        });
+
 
         InputContainer.add(voteButton);
         InputContainer.add(passButton);
@@ -466,7 +499,7 @@ public class Crossword {
                                                 newFrame.setVisible(true);
                                                 index=-2;
                                                 setColorAll();
-                                        Crossword.setWord("");
+                                                Crossword.setWord("");
 
                                                 break;
                                             }
@@ -486,7 +519,7 @@ public class Crossword {
                                                 newFrame.setVisible(true);
                                                 index=-2;
                                                 setColorAll();
-                                        Crossword.setWord("");
+                                                Crossword.setWord("");
 
                                                 break;
                                             }
@@ -512,7 +545,7 @@ public class Crossword {
                                                 newFrame.setVisible(true);
                                                 index=-2;
                                                 setColorAll();
-                                                                                        Crossword.setWord("");
+                                                Crossword.setWord("");
 
                                                 break;
                                             }
@@ -533,7 +566,7 @@ public class Crossword {
                                                 newFrame.setVisible(true);
                                                 index=-2;
                                                 setColorAll();
-                                                                                        Crossword.setWord("");
+                                                Crossword.setWord("");
 
                                                 break;
                                             }
