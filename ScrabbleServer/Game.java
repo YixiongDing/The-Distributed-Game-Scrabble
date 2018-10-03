@@ -1,3 +1,5 @@
+package ScrabbleServer;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -18,6 +20,7 @@ public class Game implements Runnable {
     private int voteYes;
     private int votecount;
     private int turn;
+    private String word_vote = null;
 
     public Game(Map<Integer, ConnectionToClient> clients, ConcurrentLinkedQueue<String> queue) {
         // TODO Auto-generated constructor stub
@@ -61,6 +64,8 @@ public class Game implements Runnable {
                                     JSONObject voteResult = new JSONObject();
                                     voteResult.put("VOTE_RESULT", "YES");
                                     this.sendAll(voteResult);
+                                    this.updateScore(username, this.word_vote.length());
+                                    this.word_vote = null;
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
@@ -78,6 +83,7 @@ public class Game implements Runnable {
                             this.voteYes += 1;
                             JSONObject sendmessage = new JSONObject();
                             sendmessage.put("VOTE", voteRequest.get("INIT"));
+                            this.word_vote = (voteRequest.get("INIT")).toString();
                             this.sendAllFromOne(sendmessage, username);
                             this.initPassCount();
                         }
@@ -162,6 +168,10 @@ public class Game implements Runnable {
 
     private void initVoteYes() {
         this.voteYes = 0;
+    }
+
+    private void updateScore(String user, int score){
+    	this.scoreboard.put(user, this.scoreboard.get(user) + score);
     }
 
     private void sendNextTurn() {
