@@ -17,7 +17,6 @@ public class ListenThread extends Thread {
                 c.connectionToServer();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-                 e.printStackTrace();
 //                System.out.println("IOException");
             }
         }

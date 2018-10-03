@@ -102,6 +102,8 @@ public class InputWindow extends JFrame implements ActionListener {
         char l = (char) (65 + comboBox.getSelectedIndex());
         Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).setText(Character.toString(l));
         Crossword.setStatus("AFTER_INPUT");
+        Crossword.setinputX(Crossword.getX());
+        Crossword.setinputY(Crossword.getY());
 
         try {
             JSONObject sendMessage = new JSONObject();

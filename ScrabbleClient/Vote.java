@@ -44,7 +44,7 @@ public class Vote extends JFrame {
         gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
         contentPane.setLayout(gbl_contentPane);
 
-        lblIsA = new JLabel("Is \"" + word + "\" a word?");
+        lblIsA = new JLabel(word);
         GridBagConstraints gbc_lblIsA = new GridBagConstraints();
         gbc_lblIsA.gridwidth = 5;
         gbc_lblIsA.insets = new Insets(0, 0, 5, 5);

@@ -2,6 +2,7 @@ package ScrabbleClient;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -37,11 +38,14 @@ public class ConnectionToServer {
             JSONObject serverJSON = (JSONObject) parser.parse(message);
             if (serverJSON.containsKey("TURN")) {
                 if (serverJSON.get("TURN").equals(myClient.getUserName())) {
+                    PromptWindow v = new PromptWindow("It is your turn! Please input!");
+                    v.setVisible(true);
+
                     cw.setTurn(true);
                 }
             } else if (serverJSON.containsKey("VOTE")) {
                 String voteWord = (String) serverJSON.get("VOTE");
-                Vote v = new Vote(voteWord, myClient);
+                Vote v = new Vote("     Is \"" + voteWord + "\" a word?", myClient);
                 v.setVisible(true);
 
             } else if (serverJSON.containsKey("COMMAND")) {
@@ -53,6 +57,42 @@ public class ConnectionToServer {
                 }
 
             }
+
+            else if (serverJSON.containsKey("SCORE")) {
+            	ArrayList <String> userName_list = new ArrayList<String>();
+            	JSONObject a = new JSONObject();
+            	a = (JSONObject) serverJSON.get("SCORE");
+            	for (Object key:  a.keySet()) {
+            		String sc=a.get(key).toString();
+            		userName_list.add("Username: " + key.toString()+";    Score:" + sc);  
+            		System.out.println(sc);
+            	}
+        		System.out.println(userName_list);
+
+                Scoreboard v = new Scoreboard(userName_list);
+                v.setVisible(true);
+
+
+            }
+            
+            
+            else if (serverJSON.containsKey("END")) {
+            	ArrayList <String> userName_list = new ArrayList<String>();
+            	JSONObject a = new JSONObject();
+            	a = (JSONObject) serverJSON.get("END");
+            	for (Object key:  a.keySet()) {
+            		String sc=a.get(key).toString();
+            		userName_list.add("Username: " + key.toString()+";    Score:" + sc);  
+            		System.out.println(sc);
+            	}
+        		System.out.println(userName_list);
+
+                Scoreboard v = new Scoreboard(userName_list);
+                v.setVisible(true);
+
+
+            }
+            
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
