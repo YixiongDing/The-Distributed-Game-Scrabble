@@ -69,6 +69,10 @@ public class Game implements Runnable {
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
+                                    JSONObject scoreMessage = new JSONObject();
+                                    scoreMessage.put("SCORE", scoreboard);
+                                    this.sendAll(scoreMessage);
+
                                 } else {
                                     JSONObject voteResult = new JSONObject();
                                     voteResult.put("VOTE_RESULT", "NO");
@@ -76,6 +80,7 @@ public class Game implements Runnable {
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
+
                                 }
                             }
                         } else if (voteRequest.containsKey("INIT")) {
