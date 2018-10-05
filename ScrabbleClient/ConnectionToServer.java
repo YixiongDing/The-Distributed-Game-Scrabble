@@ -60,18 +60,19 @@ public class ConnectionToServer {
             }
 
             else if (serverJSON.containsKey("SCORE")) {
-                ArrayList<String> userName_list = new ArrayList<String>();
-                JSONObject a = new JSONObject();
-                a = (JSONObject) serverJSON.get("SCORE");
-                for (Object key : a.keySet()) {
-                    String sc = a.get(key).toString();
-                    userName_list.add("Username:" + key.toString() + "; Score:" + sc+";");
-                    System.out.println(sc);
-                }
-                System.out.println(userName_list);
+            	ArrayList <String> userName_list = new ArrayList<String>();
+            	JSONObject a = new JSONObject();
+            	a = (JSONObject) serverJSON.get("SCORE");
+            	for (Object key:  a.keySet()) {
+            		String sc=a.get(key).toString();
+            		userName_list.add("Username: " + key.toString()+" ;Score:" + sc+";");  
+            		System.out.println(sc);
+            	}
+        		System.out.println(userName_list);
+        		Crossword.setScorebd(userName_list);
+               // Scoreboard v = new Scoreboard(userName_list);
+                //v.setVisible(true);
 
-                Scoreboard v = new Scoreboard(userName_list);
-                v.setVisible(true);
 
             }
 
