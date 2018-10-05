@@ -13,10 +13,13 @@ public class Server {
             int port = Integer.parseInt(args[0]);
             ServerSocketFactory factory = ServerSocketFactory.getDefault();
             ServerSocket server = factory.createServerSocket(port);
-            Map<Integer, ConnectionToClient> clients = new HashMap<Integer, ConnectionToClient>();
+            Map<Integer, ConnectionToClient> idleClients = new HashMap<Integer, ConnectionToClient>();
+            Map<Integer, ConnectionToClient> readyClients = new HashMap<Integer, ConnectionToClient>();
             ConcurrentLinkedQueue<String> messages = new ConcurrentLinkedQueue<String>();
+            GameAssistant gameAssitant = null;
             String username = null;
             int id = 0;
+            boolean startGame = false;
             System.out.println("Server is up!");
 
             while (true) {
@@ -27,20 +30,20 @@ public class Server {
                 BufferedReader br = new BufferedReader(isr);
                 username = br.readLine();
 
-                if (checkClient(username, clients)) {
+                if (checkClient(username, idleClients)) {
                     System.out.println(username + "has already logged in!");
                     output.writeUTF(username + "has already logged in!\n");
                 } else {
                     System.out.println(username + " connected");
                     ConnectionToClient newclient = new ConnectionToClient(id, client, username);
-                    clients.put(id, newclient);
-                    Thread clientThread = new Thread(new HandleClient(newclient, messages));
+                    idleClients.put(id, newclient);
+                    Thread clientThread = new Thread(new HandleClient(newclient, messages, idleClients, readyClients, gameAssitant));
                     clientThread.start();
                     id += 1;
                 }
 
-                if (id >= 2) {
-                    Thread gameThread = new Thread(new Game(clients, messages));
+                if (gameAssitant.getStarted()) {
+                    Thread gameThread = new Thread(new Game(readyClients, messages));
                     gameThread.start();
                 }
             }

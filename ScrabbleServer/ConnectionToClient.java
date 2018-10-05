@@ -1,5 +1,4 @@
 package ScrabbleServer;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class ConnectionToClient {
 	private BufferedWriter bw;
 	private JSONParser parser = new JSONParser();
 	private String userName;
-	
+
 	public ConnectionToClient(int id, Socket socket, String userName) {
 		this.clientId = id;
 		this.socket = socket;
@@ -33,35 +32,35 @@ public class ConnectionToClient {
 			InputStreamReader isr = new InputStreamReader(in);
 			this.br = new BufferedReader(isr);
 			this.out = this.socket.getOutputStream();
-            OutputStreamWriter osw = new OutputStreamWriter(out);
-            this.bw = new BufferedWriter(osw);
+			OutputStreamWriter osw = new OutputStreamWriter(out);
+			this.bw = new BufferedWriter(osw);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.out = out;
 	}
-	
+
 	public int getClientId() {
 		return clientId;
 	}
-	
+
 	protected BufferedReader getReader() {
 		return br;
 	}
-	
+
 	protected BufferedWriter getWriter() {
 		return bw;
 	}
-	
+
 	protected Socket getSocket() {
 		return socket;
 	}
-	
+
 	protected String getUserName() {
 		return this.userName;
 	}
-	
+
 	protected boolean sendMessage(JSONObject message) {
 		try {
 			this.bw.write(message.toJSONString()+"\n");
@@ -73,14 +72,14 @@ public class ConnectionToClient {
 			return false;
 		}
 	}
-	
+
 	protected JSONObject getMessage() {
 		try {
 			String inputRead = br.readLine();
 			if (inputRead != null) { 
-            	JSONObject messageJSON = (JSONObject) parser.parse(inputRead);
-		        String message = (String) messageJSON.get("COMMAND"); 
-		        String word = (String) messageJSON.get("WORD");
+				JSONObject messageJSON = (JSONObject) parser.parse(inputRead);
+				String message = (String) messageJSON.get("COMMAND"); 
+				String word = (String) messageJSON.get("WORD");
 				return messageJSON;
 			}else {
 				return null;
