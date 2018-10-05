@@ -37,11 +37,10 @@ public class ConnectionToServer {
         try {
             JSONObject serverJSON = (JSONObject) parser.parse(message);
             if (serverJSON.containsKey("TURN")) {
+                cw.setTurnLabel("                   It's " + serverJSON.get("TURN") + "'s turn");
                 if (serverJSON.get("TURN").equals(myClient.getUserName())) {
                     // PromptWindow v = new PromptWindow("It is your turn! Please input!");
                     // v.setVisible(true);
-                    cw.setTurnLabel("                   It's " + serverJSON.get("TURN") + "'s turn");
-
                     cw.setTurn(true);
                 }
             } else if (serverJSON.containsKey("VOTE")) {

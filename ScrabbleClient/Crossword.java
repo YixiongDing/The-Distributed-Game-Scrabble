@@ -51,18 +51,18 @@ public class Crossword {
     private static JTextArea txtrUsername;
 
     private static boolean turn = false;
-    private JLabel turnLabel = new JLabel("");
+    private static JLabel turnLabel = new JLabel("");
 
     public static void setScorebd(ArrayList<String> a) {
         txtrUsername.setText("");
-        txtrUsername.append("Scoreboard:");
+        txtrUsername.append("Scoreboard:\n");
         for (String s : a) {
-            txtrUsername.append(s);
+            txtrUsername.append(s+"\n");
         }
 
     }
 
-    public void setTurnLabel(String text) {
+    public static void setTurnLabel(String text) {
 
         turnLabel.setText(text);
     }
