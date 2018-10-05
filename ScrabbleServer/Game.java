@@ -69,6 +69,7 @@ public class Game implements Runnable {
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
+                                    // added by lsh and Frank
                                     JSONObject scoreMessage = new JSONObject();
                                     scoreMessage.put("SCORE", scoreboard);
                                     this.sendAll(scoreMessage);
