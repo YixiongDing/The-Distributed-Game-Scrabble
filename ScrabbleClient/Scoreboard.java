@@ -59,8 +59,11 @@ public class Scoreboard extends JFrame {
 		txtrUsername.setBackground(Color.LIGHT_GRAY);
 		txtrUsername.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		txtrUsername.setLineWrap(true);
-		String txtFd = toPrint.toString();
-		txtrUsername.setText(txtFd);
+		for (String a:toPrint) {
+		    txtrUsername.append(a+"\n");
+		}
+		//String txtFd = toPrint.toString();
+		//txtrUsername.setText(txtFd);
 
 		scrollPane.setViewportView(txtrUsername);
 	}
