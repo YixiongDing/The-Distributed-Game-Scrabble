@@ -32,6 +32,7 @@ public class Game implements Runnable {
     public void run() {
         this.init();
         this.sendNextTurn();
+        this.sendScoreBoard();
         while (true) {
             String message = this.queue.poll();
             if (message != null) {
@@ -63,18 +64,19 @@ public class Game implements Runnable {
                                 
                                 if (this.voteYes >= (this.votecount / 2)) {
                                     this.updateScore(username, this.word_vote.length());
-                                    JSONObject voteResult = new JSONObject();
-                                    voteResult.put("VOTE_RESULT", "YES");
-                                    voteResult.put("YES",scoreboard);
-                                    this.sendAll(voteResult);
+//                                     JSONObject voteResult = new JSONObject();
+//                                     voteResult.put("VOTE_RESULT", "YES");
+//                                     this.sendAll(voteResult);
+                                    this.sendScoreBoard();
                                     this.word_vote = null;
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
                                 } else {
-                                    JSONObject voteResult = new JSONObject();
-                                    voteResult.put("VOTE_RESULT", "NO");
-                                    this.sendAll(voteResult);
+//                                     JSONObject voteResult = new JSONObject();
+//                                     voteResult.put("VOTE_RESULT", "NO");
+//                                     this.sendAll(voteResult);
+                                    this.word_vote = null;
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
@@ -183,4 +185,9 @@ public class Game implements Runnable {
         userturn.put("TURN", username);
         this.sendAll(userturn);
     }
+    
+    private void sendScoreBoard(){
+        JSONObject sendScore = new JSONObject();
+        sendScore.put("SCOREBOARD",scoreboard);
+        this.sendAll(sendScore);
 }
