@@ -64,18 +64,18 @@ public class Game implements Runnable {
                                 
                                 if (this.voteYes >= (this.votecount / 2)) {
                                     this.updateScore(username, this.word_vote.length());
-//                                     JSONObject voteResult = new JSONObject();
-//                                     voteResult.put("VOTE_RESULT", "YES");
-//                                     this.sendAll(voteResult);
+                                    JSONObject voteResult = new JSONObject();
+                                    voteResult.put("VOTE_RESULT", "YES");
+                                    this.sendAll(voteResult);
                                     this.sendScoreBoard();
                                     this.word_vote = null;
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
                                 } else {
-//                                     JSONObject voteResult = new JSONObject();
-//                                     voteResult.put("VOTE_RESULT", "NO");
-//                                     this.sendAll(voteResult);
+                                    JSONObject voteResult = new JSONObject();
+                                    voteResult.put("VOTE_RESULT", "NO");
+                                    this.sendAll(voteResult);
                                     this.word_vote = null;
                                     this.initVoteCount();
                                     this.initVoteYes();
