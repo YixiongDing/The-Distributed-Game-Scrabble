@@ -60,18 +60,21 @@ public class Game implements Runnable {
                             }
                             // decide process
                             if (this.votecount >= this.nameList.size()) {
+                                
                                 if (this.voteYes >= (this.votecount / 2)) {
-                                    JSONObject voteResult = new JSONObject();
-                                    voteResult.put("VOTE_RESULT", "YES");
-                                    this.sendAll(voteResult);
                                     this.updateScore(username, this.word_vote.length());
+                                    JSONObject voteResult = new JSONObject();
+                                    voteResult.put("VOTE_RESULT", scoreboard);
+                                    this.sendAll(voteResult);
                                     this.word_vote = null;
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
                                 } else {
+                                    JSONObject voteResponse = new JSONObject();
                                     JSONObject voteResult = new JSONObject();
-                                    voteResult.put("VOTE_RESULT", "NO");
+                                    voteResponse.put("NO","NO");
+                                    voteResult.put("VOTE_RESULT", voteResponse);
                                     this.sendAll(voteResult);
                                     this.initVoteCount();
                                     this.initVoteYes();
