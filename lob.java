@@ -12,7 +12,6 @@ import javax.swing.border.EmptyBorder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import ScrabbleClient.Lobby.DataModel;
 
 
 import javax.swing.JScrollPane;
@@ -53,7 +52,7 @@ import org.json.simple.parser.JSONParser;
 	    private JSONParser parser = new JSONParser();
 		public static int createstatus = 0;
 
-	    String inviteduser;
+	    String inviteduser= null;
 	    String[] userlist = {"A","B","C","D","E"};
 	    
 	    
@@ -160,7 +159,7 @@ import org.json.simple.parser.JSONParser;
 		        this.add(CreateButton);
 		        this.add(textArea);
 		        this.add(scrollPane_1);
-		        
+		        StartButton.setEnabled(false);
 		        StartButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 		                try {
@@ -228,18 +227,18 @@ import org.json.simple.parser.JSONParser;
 				 InviteButton.addActionListener(new ActionListener() {
 				 	public void actionPerformed(ActionEvent e) {
 		                try {
+		                	if (inviteduser == null) {
+		                	new MessageUI("please find a player.");
+		                	}else {
 	                    JSONObject sent = new JSONObject();
 	                    sent.put("COMMAND", "INVITE");
-	                    // JSONObject word = new JSONObject();
-	                    // word.put("WORD", getWord());
-	                    JSONObject message = new JSONObject();
-	                    message.put("INVITE", inviteduser);
-	                    sent.put("MESSAGE", message);
+	                    sent.put("MESSAGE", inviteduser);
 	                    myClient.getBufferWrite().write(sent.toJSONString() + "\n");
 	                    myClient.getBufferWrite().flush();
 	                    System.out.println(sent.toJSONString());
 				 		
 		                System.out.println(inviteduser);
+		                }
 	                } catch (IOException e1) {
 	                    // TODO Auto-generated catch block
 	                	System.out.println("IOException");
@@ -256,14 +255,14 @@ import org.json.simple.parser.JSONParser;
 		                try {
 		                    JSONObject sent = new JSONObject();
 		                    sent.put("COMMAND", "CREATE");
-		                    JSONObject message = new JSONObject();
-		                    message.put("CREATE", myClient.getUserName());
-		                    sent.put("MESSAGE", message);
+//		                    JSONObject message = new JSONObject();
+//		                    message.put("CREATE", myClient.getUserName());
+//		                    sent.put("MESSAGE", message);
 		                    myClient.getBufferWrite().write(sent.toJSONString() + "\n");
 		                    myClient.getBufferWrite().flush();
 		                    System.out.println(sent.toJSONString());
-		                    
-		                    if(ConnectionToServer.createstatus==0) {
+		                    System.out.println(ConnectionToServer.createstatus);
+/*		                    if(ConnectionToServer.createstatus==0) {
 		                        new MessageUI("Waiting for the server to respond, please try again later.");
 
 		                    }else if(ConnectionToServer.createstatus==1) {
@@ -272,8 +271,8 @@ import org.json.simple.parser.JSONParser;
 		                        StartButton.setEnabled(true);
 		                    }else if(ConnectionToServer.createstatus==2) {
 		                        new MessageUI("There is a game in progress, please try again later.");
-		                    }
-		                    
+		                    }*/
+		                    System.out.println(ConnectionToServer.createstatus);
 		                    
 		                    
 		                } catch (IOException e1) {
@@ -308,10 +307,18 @@ import org.json.simple.parser.JSONParser;
 				 
 
 				
-				
+			        setVisible(true);
 	}
 			public  void textappend(String string) {
 				textArea.append(string);
+				
+			}
+			public  void turnCreateButton(boolean b) {
+				CreateButton.setEnabled(b);
+				
+			}
+			public  void turnStartButton(boolean b) {
+				StartButton.setEnabled(b);
 				
 			}
 

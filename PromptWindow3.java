@@ -17,12 +17,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
-public class PromptWindow extends JFrame implements ActionListener{
+public class PromptWindow3 extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	private JLabel lblIsA;
 	private static String promptText="Prompt Message";
-    private static PromptWindow frame;
+    private static PromptWindow3 frame;
+    
 
 	/**
 	 * Launch the application.
@@ -31,9 +32,9 @@ public class PromptWindow extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
-	public PromptWindow(String a) {
+	public PromptWindow3(String a,MyClient myClient) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 250, 150);
+		setBounds(100, 100, 350, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -57,16 +58,15 @@ public class PromptWindow extends JFrame implements ActionListener{
 		btnGoBack.addMouseListener(new MouseAdapter(){
         	@Override
     		public void mouseClicked(MouseEvent e) {
-                setEnabled(true);
-
-
+    			
+        		setEnabled(true);
         	}
     				
     		
     		
     	});
 		GridBagConstraints gbc_btnYes = new GridBagConstraints();
-		gbc_btnYes.insets = new Insets(30, 50, 5, 5);
+		gbc_btnYes.insets = new Insets(30, 100, 5, 5);
 		gbc_btnYes.gridx = 5;
 		gbc_btnYes.gridy = 5;
 		contentPane.add(btnGoBack, gbc_btnYes);
@@ -75,8 +75,8 @@ public class PromptWindow extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-			
 		setEnabled(true);
+
 		this.dispose();
 	}
 
