@@ -66,6 +66,8 @@ public class Vote extends JFrame {
                     myClient.getBufferWrite().write(sent.toJSONString() + "\n");
                     myClient.getBufferWrite().flush();
                     System.out.println(sent.toJSONString());
+                    Crossword.CrosswordPanel.setColorAll();
+
                     dispose();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
@@ -94,6 +96,7 @@ public class Vote extends JFrame {
                     myClient.getBufferWrite().write(sent.toJSONString() + "\n");
                     myClient.getBufferWrite().flush();
                     System.out.println(sent.toJSONString());
+                    Crossword.CrosswordPanel.setColorAll();
                     dispose();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block

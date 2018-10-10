@@ -39,11 +39,11 @@ public class Crossword {
     private static int ind = -1;
     private static int firstX = -1;
     private static int firstY = -1;
-
+    private static ArrayList<String> cord;
     private static int inputX = -1;
     private static int inputY = -1;
     private static String word = "";
-
+   
     private static BufferedReader bufferRead;
     private static BufferedWriter bufferWrite;
     private static MyClient myClient;
@@ -247,6 +247,55 @@ public class Crossword {
                         sent.put("MESSAGE", message);
                         bufferWrite.write(sent.toJSONString() + "\n");
                         bufferWrite.flush();
+
+
+                        JSONObject sent2 = new JSONObject();
+                        sent.put("COMMAND", "COORD");
+                        // JSONObject word = new JSONObject();
+                        // word.put("WORD", getWord());
+                        JSONObject message2 = new JSONObject();
+                        message2.put("X1", getFirstX());
+                        message2.put("Y1", getFirstY());
+                        message2.put("X2", getX());
+                        message2.put("Y2", getY());
+
+                        sent.put("MESSAGE", message2);
+                        bufferWrite.write(sent.toJSONString() + "\n");
+                        bufferWrite.flush();
+
+                        /*
+                        sent.put("MESSAGE", message);
+                        bufferWrite.write(sent.toJSONString() + "\n");
+                        bufferWrite.flush();
+                        
+                        JSONObject sent3 = new JSONObject();
+                        sent.put("COMMAND", "COORD");
+                        // JSONObject word = new JSONObject();
+                        // word.put("WORD", getWord());
+                        JSONObject message3 = new JSONObject();
+                        message.put("Y1", getFirstY());
+                        sent.put("MESSAGE", message);
+                        bufferWrite.write(sent.toJSONString() + "\n");
+                        bufferWrite.flush();
+                        JSONObject sent4 = new JSONObject();
+                        sent.put("COMMAND", "COORD");
+                        // JSONObject word = new JSONObject();
+                        // word.put("WORD", getWord());
+                        JSONObject message4 = new JSONObject();
+                        message.put("X2", getX());
+                        sent.put("MESSAGE", message);
+                        bufferWrite.write(sent.toJSONString() + "\n");
+                        bufferWrite.flush();
+                        JSONObject sent5 = new JSONObject();
+                        sent.put("COMMAND", "COORD");
+                        // JSONObject word = new JSONObject();
+                        // word.put("WORD", getWord());
+                        JSONObject message5 = new JSONObject();
+                        message.put("Y2", getY());
+                        */
+                        
+                        
+                        
                         System.out.println(sent.toJSONString());
                         setTurn(false);
                         setStatus("INPUT");

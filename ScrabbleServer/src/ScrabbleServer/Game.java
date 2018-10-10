@@ -50,7 +50,15 @@ public class Game implements Runnable {
 						this.sendAllFromOne(sendmessage, username);
 						this.initPassCount();
 						// send turn to all
-					} else if (command.equals("VOTING")) {
+					} 	else if (command.equals("COORD")) {
+						// new
+						JSONObject sendmessage = messageJSON;// (JSONObject) messageUser.get("NEW");
+						this.sendAllFromOne(sendmessage, username);
+						// send turn to all
+					} 
+
+					
+					else if (command.equals("VOTING")) {
 						// JSONObject voteRequest = (JSONObject) messageUser.get("VOTING");
 						JSONObject voteRequest = messageUser;
 						// vote process
