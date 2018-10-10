@@ -52,7 +52,7 @@ public class Game implements Runnable {
 						// send turn to all
 					} 	else if (command.equals("COORD")) {
 						// new
-						JSONObject sendmessage = messageJSON;// (JSONObject) messageUser.get("NEW");
+						JSONObject sendmessage = messageJSON;// (JSONObject) messageUser.get("COORD");
 						this.sendAllFromOne(sendmessage, username);
 						// send turn to all
 					} 
