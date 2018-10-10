@@ -10,7 +10,7 @@ import javax.net.ServerSocketFactory;
 public class Server {
     public static void main(String[] args) {
         try {
-            int port = Integer.parseInt(args[0]);
+            int port = Integer.parseInt("12345");
             ServerSocketFactory factory = ServerSocketFactory.getDefault();
             ServerSocket server = factory.createServerSocket(port);
             Map<Integer, ConnectionToClient> clients = new HashMap<Integer, ConnectionToClient>();

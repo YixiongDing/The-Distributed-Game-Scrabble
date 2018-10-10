@@ -37,11 +37,10 @@ public class ConnectionToServer {
         try {
             JSONObject serverJSON = (JSONObject) parser.parse(message);
             if (serverJSON.containsKey("TURN")) {
+                cw.setTurnLabel("                   It's " + serverJSON.get("TURN") + "'s turn");
                 if (serverJSON.get("TURN").equals(myClient.getUserName())) {
                     // PromptWindow v = new PromptWindow("It is your turn! Please input!");
                     // v.setVisible(true);
-                    cw.setTurnLabel("                   It's " + serverJSON.get("TURN") + "'s turn");
-
                     cw.setTurn(true);
                 }
             } else if (serverJSON.containsKey("VOTE")) {
@@ -59,10 +58,10 @@ public class ConnectionToServer {
 
             }
 
-            else if (serverJSON.containsKey("SCORE")) {
+            else if (serverJSON.containsKey("SCOREBOARD")) {
             	ArrayList <String> userName_list = new ArrayList<String>();
             	JSONObject a = new JSONObject();
-            	a = (JSONObject) serverJSON.get("SCORE");
+            	a = (JSONObject) serverJSON.get("SCOREBOARD");
             	for (Object key:  a.keySet()) {
             		String sc=a.get(key).toString();
             		userName_list.add("Username: " + key.toString()+" ;Score:" + sc+";");  
