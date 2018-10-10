@@ -1,6 +1,5 @@
 package ScrabbleClient;
 
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -28,6 +27,8 @@ public class Login {
     private static BufferedReader bufferRead;
     private static BufferedWriter bufferWrite;
     private static MyClient myClient;
+    private JTextField textField_1;
+    private JTextField textField_2;
 
     /**
      * Launch the application.
@@ -75,7 +76,9 @@ public class Login {
                 // Random r = new Random();
                 // String userName = "user" + r.nextInt(999999);
                 String userName = textField.getText();
-                myClient = new MyClient("localhost", String.valueOf(12345), userName);
+                String address = textField_1.getText();
+                String portNumber = textField_2.getText();
+                myClient = new MyClient(address, portNumber, userName);
                 // MyClient myClient = new MyClient(textField.getText(), textField2.getText());
                 myClient.buildBufferRead();
                 myClient.buildBufferWrite();
@@ -99,7 +102,7 @@ public class Login {
                 }
             }
         });
-        btnLogin.setBounds(61, 137, 93, 23);
+        btnLogin.setBounds(65, 153, 93, 23);
         frame.getContentPane().add(btnLogin);
 
         JButton btnCancel = new JButton("Cancel");
@@ -108,17 +111,34 @@ public class Login {
                 System.exit(0);
             }
         });
-        btnCancel.setBounds(219, 137, 93, 23);
+        btnCancel.setBounds(216, 153, 93, 23);
         frame.getContentPane().add(btnCancel);
 
         textField = new JTextField();
-        textField.setBounds(143, 63, 186, 23);
+        textField.setBounds(143, 93, 186, 26);
         frame.getContentPane().add(textField);
         textField.setColumns(10);
 
         JLabel lblUsername = new JLabel("Username");
-        lblUsername.setBounds(55, 67, 78, 15);
+        lblUsername.setBounds(49, 98, 78, 16);
         frame.getContentPane().add(lblUsername);
+        
+        JLabel lblAddress = new JLabel("Address");
+        lblAddress.setBounds(49, 26, 61, 16);
+        frame.getContentPane().add(lblAddress);
+        
+        textField_1 = new JTextField();
+        textField_1.setBounds(143, 21, 186, 26);
+        frame.getContentPane().add(textField_1);
+        textField_1.setColumns(10);
+        
+        JLabel lblPortNumber = new JLabel("Port Number");
+        lblPortNumber.setBounds(49, 59, 109, 16);
+        frame.getContentPane().add(lblPortNumber);
+        
+        textField_2 = new JTextField();
+        textField_2.setBounds(143, 55, 186, 26);
+        frame.getContentPane().add(textField_2);
+        textField_2.setColumns(10);
     }
-
 }
