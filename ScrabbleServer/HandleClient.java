@@ -1,4 +1,5 @@
 package ScrabbleServer;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Collection;
@@ -12,20 +13,18 @@ import org.json.simple.parser.ParseException;
 public class HandleClient implements Runnable {
 	private ConnectionToClient client;
 	private ConcurrentLinkedQueue<String> inGameMessages;
+	private ConcurrentLinkedQueue<String> inLobbyMessages;
 	private JSONParser parser = new JSONParser();
-	private Map<Integer, ConnectionToClient> idleClients = new HashMap<Integer, ConnectionToClient>();
-	private Map<Integer, ConnectionToClient> readyClients = new HashMap<Integer, ConnectionToClient>();
-	private Collection<ConnectionToClient> readyClientSockets;
-	private GameAssistant gameAssitant;
+	private Map<Integer, ConnectionToClient> idleClients;
+	private Map<Integer, ConnectionToClient> readyClients;
 
-
-	HandleClient(ConnectionToClient client, ConcurrentLinkedQueue<String> inGameMessages, Map<Integer, ConnectionToClient> idleClients, Map<Integer, ConnectionToClient> readyClients, GameAssistant gameAssitant) {
+	HandleClient(ConnectionToClient client, ConcurrentLinkedQueue<String> inLobbyMessages, ConcurrentLinkedQueue<String> inGameMessages,
+				 Map<Integer, ConnectionToClient> idleClients, Map<Integer, ConnectionToClient> readyClients) {
 		this.client = client;
 		this.inGameMessages = inGameMessages;
+		this.inLobbyMessages = inLobbyMessages;
 		this.idleClients = idleClients;
 		this.readyClients = readyClients;
-		this.readyClientSockets = readyClients.values();
-		this.gameAssitant = gameAssitant;
 	}
 
 	@Override
@@ -38,81 +37,34 @@ public class HandleClient implements Runnable {
 			while (true) {
 				if (br != null) {
 					try {
-						JSONObject messageJSON = (JSONObject) parser.parse(br.readLine());
-						String command = (String) messageJSON.get("COMMAND");
-						JSONObject messageUser = (JSONObject) messageJSON.get("MESSAGE");
-						String messageString; 
-						
-						switch(command) 
-						{
-						case "CREATE":
+						if(idleClients.containsKey(client.getClientId())){
+							System.out.println("check 1\n");
+							JSONObject messageJSON = (JSONObject) parser.parse(br.readLine());
 							messageJSON.put("USER", client.getUserName());
-							messageString = messageJSON.toJSONString();
-							inGameMessages.add(messageString);
-							readyClients.put(client.getClientId(), client);
-							idleClients.remove(client.getClientId());
-							break;
+							String messageString = messageJSON.toJSONString();
+							inLobbyMessages.add(messageString);
+							System.out.println(messageString);
 
-						case "JOIN":
+						}
+						else{
+							System.out.println("check 2\n");
+							JSONObject messageJSON = (JSONObject) parser.parse(br.readLine());
 							messageJSON.put("USER", client.getUserName());
-							messageString = messageJSON.toJSONString();
+							String messageString = messageJSON.toJSONString();
 							inGameMessages.add(messageString);
-							readyClients.put(client.getClientId(), client);
-							idleClients.remove(client.getClientId());
-							break;
-
-						case "INVITE":
-							sendToUser(messageJSON, (String) messageJSON.get("INVITE"));
-							gameAssitant.updateInviter(client);
-							break;
-
-						case "ACCEPTANCE":
-							if(messageUser.get("ACCEPTANCE").equals("YES")) {
-								messageJSON.put("USER", client.getUserName());
-								messageString = messageJSON.toJSONString();
-								readyClients.put(client.getClientId(), client);
-								idleClients.remove(client.getClientId());
-								break;
-							}else {
-								sendToUser(messageUser, gameAssitant.getInviterName());
-								break;
-							}
-							
-						case "START": 
-							if(gameAssitant.getStarterName().equals(client.getUserName())) {
-								gameAssitant.startGame(true);
-								break;
-							}else {
-								JSONObject messageBack = new JSONObject();
-								messageBack.put("Message", "Only the room owner can start the game!");
-								sendToUser(messageBack, client.getUserName());
-								break;
-							}
-							
-						case "LOGOUT":
-							idleClients.put(client.getClientId(), client);
-							readyClients.remove(client.getClientId());
-							break;
 						}
 					} catch (ParseException e) {
-						e.printStackTrace();
+						//e.printStackTrace();
+
 					}
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println(client.getUserName() + "connection lost");
+			//e.printStackTrace();
+			System.out.println(client.getUserName() + " connection lost");
+			System.out.println(client.getUserName() + " has left the room!");
+			readyClients.remove(client.getClientId());
+			idleClients.remove(client.getClientId());
 		}
 	}
-
-
-	private void sendToUser(JSONObject message, String user) {
-		for (ConnectionToClient c : this.readyClientSockets) {
-			if (c.getUserName().equals(user)) {
-				c.sendMessage(message);
-				break;
-			}
-		}
-	}
-
 }
