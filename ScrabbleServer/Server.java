@@ -20,6 +20,7 @@
 
                 String username = null;
                 int id = 0;
+
                 JSONObject response = new JSONObject();
 
                 System.out.println("Server is up!");
@@ -33,13 +34,14 @@
                     BufferedReader br = new BufferedReader(isr);
                     BufferedWriter bw = new BufferedWriter(osw);
                     username = br.readLine();
+                    boolean startLobby = false;
 
                     if (checkClient(username, idleClients)) {
                         System.out.println(username + " has already logged in!");
                         response.put("LOGINSTATUS", "2");
                         bw.write(response.toJSONString()+"\n");
                         bw.flush();
-                    } else {
+                    }else {
                         System.out.println(username + " connected");
                         response.put("LOGINSTATUS", "1");
                         ConnectionToClient newclient = new ConnectionToClient(id, client, username);
@@ -48,9 +50,12 @@
                         clientThread.start();
                         sendToUser(response, username,idleClients);
                         id += 1;
+                        if(id == 1) {
+                            startLobby = true;
+                        }
                     }
 
-                    if (id == 1) {
+                    if (startLobby) {
                         Thread lobbyThread = new Thread(new HandleLobby(idleClients, inLobbyMessages));
                         lobbyThread.start();
                     }
