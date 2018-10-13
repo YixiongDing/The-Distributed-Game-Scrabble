@@ -41,10 +41,6 @@ public class ConnectionToClient {
 		this.out = out;
 	}
 
-	public ConnectionToClient(String userName) {
-		this.userName = userName;
-	}
-
 	public int getClientId() {
 		return clientId;
 	}

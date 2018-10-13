@@ -1,7 +1,14 @@
-package ScrabbleServer;
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
 
+//Game.java is a thread class that handle clients request during gaming phase. Game thread will process 
+//data sent from clients, and broadcast game related information to other clients
+
+package ScrabbleServer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -31,11 +38,13 @@ public class Game implements Runnable {
     public void run() {
         this.init();
         this.sendNextTurn();
+        this.sendScoreBoard();
         while (true) {
+            // Thread read request from queue
             String message = this.queue.poll();
+            // Thread process requests and broadcast information to other clients
             if (message != null) {
                 try {
-                    // System.out.println(message);
                     JSONObject messageJSON = (JSONObject) parser.parse(message);
                     String username = (String) messageJSON.get("USER");
                     JSONObject messageUser = (JSONObject) messageJSON.get("MESSAGE");
@@ -43,13 +52,18 @@ public class Game implements Runnable {
                     System.out.println(command);
                     System.out.println(username + ":" + command + "," + messageUser);// test info
                     if (command.equals("NEW")) {
-                        // new
-                        JSONObject sendmessage = messageJSON;// (JSONObject) messageUser.get("NEW");
+                        JSONObject sendmessage = messageJSON;
                         this.sendAllFromOne(sendmessage, username);
                         this.initPassCount();
                         // send turn to all
-                    } else if (command.equals("VOTING")) {
-                        // JSONObject voteRequest = (JSONObject) messageUser.get("VOTING");
+                    } 	else if (command.equals("COORD")) {
+                        JSONObject sendmessage = messageJSON;
+                        this.sendAllFromOne(sendmessage, username);
+                        // send turn to all
+                    }
+
+
+                    else if (command.equals("VOTING")) {
                         JSONObject voteRequest = messageUser;
                         // vote process
                         if (voteRequest.containsKey("VOTE")) {
@@ -59,11 +73,13 @@ public class Game implements Runnable {
                             }
                             // decide process
                             if (this.votecount >= this.nameList.size()) {
+
                                 if (this.voteYes >= (this.votecount / 2)) {
+                                    this.updateScore(username, this.word_vote.length());
                                     JSONObject voteResult = new JSONObject();
                                     voteResult.put("VOTE_RESULT", "YES");
                                     this.sendAll(voteResult);
-                                    this.updateScore(username, this.word_vote.length());
+                                    this.sendScoreBoard();
                                     this.word_vote = null;
                                     this.initVoteCount();
                                     this.initVoteYes();
@@ -72,6 +88,7 @@ public class Game implements Runnable {
                                     JSONObject voteResult = new JSONObject();
                                     voteResult.put("VOTE_RESULT", "NO");
                                     this.sendAll(voteResult);
+                                    this.word_vote = null;
                                     this.initVoteCount();
                                     this.initVoteYes();
                                     this.sendNextTurn();
@@ -103,6 +120,9 @@ public class Game implements Runnable {
                         JSONObject endmessage = new JSONObject();
                         endmessage.put("END", scoreboard);
                         this.sendAll(endmessage);
+                        JSONObject display = new JSONObject();
+                        display.put("DISPLAY","game ended");
+                        this.sendAll(display);
                         break;
                     }
                 } catch (ParseException e) {
@@ -113,12 +133,13 @@ public class Game implements Runnable {
         }
     }
 
+    // sendAll will brocast an JSONObject message to all clients registered in ConnectionToclient list
     private void sendAll(JSONObject message) {
         for (ConnectionToClient c : this.clients) {
             c.sendMessage(message);
         }
     }
-
+    // sendAllFromOne will brocast an JSONObject message to all clients registered in ConnectionToclient list execpt a specified user
     private void sendAllFromOne(JSONObject message, String user) {
         for (ConnectionToClient c : this.clients) {
             if (!c.getUserName().equals(user)) {
@@ -126,7 +147,7 @@ public class Game implements Runnable {
             }
         }
     }
-
+    // sendToUser will only send an JSONObject message to a specified user in the ConnectionToclient list
     private void sendToUser(JSONObject message, String user) {
         for (ConnectionToClient c : this.clients) {
             if (c.getUserName().equals(user)) {
@@ -135,7 +156,7 @@ public class Game implements Runnable {
             }
         }
     }
-
+    // init will init the game state at the begining of the game
     private void init() {
         this.initPassCount();
         this.initVoteCount();
@@ -144,40 +165,46 @@ public class Game implements Runnable {
         this.getNamelist();
         this.initScoreBoard();
     }
-
+    // getNamelist will initilise the list of username
     private void getNamelist() {
         for (ConnectionToClient c : this.clients) {
             this.nameList.add(c.getUserName());
         }
     }
-
+    // initPassCount will initilise the passCount variable
     private void initPassCount() {
         this.passcount = 0;
     }
-
+    // initScoreBoard will initilise the ScoreBoard
     private void initScoreBoard() {
         for (String c : this.nameList) {
             this.scoreboard.put(c, 0);
         }
     }
-
+    // initVoteCount will initilise the VoteCount variable
     private void initVoteCount() {
         this.votecount = 0;
     }
-
+    // initVoteYes will initilise the VoteYes variable
     private void initVoteYes() {
         this.voteYes = 0;
     }
-
+    // updateScore will update score for a user if the user gain a score
     private void updateScore(String user, int score){
-    	this.scoreboard.put(user, Integer.valueOf(this.scoreboard.get(user).toString()) + score);
+        this.scoreboard.put(user, Integer.valueOf(this.scoreboard.get(user).toString()) + score);
     }
-
+    // sendNextTurn will broadcst turn information to all clients
     private void sendNextTurn() {
         this.turn = this.turn + 1;
         String username = this.nameList.get(this.turn % this.nameList.size());
         JSONObject userturn = new JSONObject();
         userturn.put("TURN", username);
         this.sendAll(userturn);
+    }
+    // sendScoreBoard will brocast latest Scoreboad information to all clients
+    private void sendScoreBoard(){
+        JSONObject sendScore = new JSONObject();
+        sendScore.put("SCOREBOARD",scoreboard);
+        this.sendAll(sendScore);
     }
 }
