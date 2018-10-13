@@ -32,8 +32,6 @@ public class Crossword {
     private static JFrame f;
     private static char[][] charSet;
     private static String status = "INPUT";
-    // Status has listening (the server), Inputting (the word), Voting, Preping (the
-    // vote)
     private static int xCoordinate = -1; // record the last xCoordinate
     private static int yCoordinate = -1; // record the last yCoordinate
     private static int ind = -1;
@@ -75,29 +73,7 @@ public class Crossword {
         return turn;
     }
 
-    /**
-     * Launch the application.
-     */
-
-    // public static void main(String[] args) {
-    // EventQueue.invokeLater(new Runnable() {
-    // public void run() {
-    // try {
-    // Crossword window = new Crossword();
-    // window.f.setVisible(true);
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    //
-    // /*
-    // * charSet = new char[20][20]; for (int i=0;i<20;i++) { for (int j = 0;
-    // * j<20;j++) { charSet[i][j]= } }
-    // */
-    // }
-    // });
-    // }
-
-    public static void setWord(String a) {
+        public static void setWord(String a) {
         word = a;
     }
 
@@ -199,42 +175,10 @@ public class Crossword {
 
         JPanel InputContainer = new JPanel(new FlowLayout());
 
-        /*
-         * InputContainer.add(new JLabel("Please enter:")); InputContainer.add(new
-         * JLabel("x:"));
-         * 
-         * // JTextField xTextfield = new JTextField(); // xTextfield.setColumns(1); //
-         * InputContainer.add(xTextfield);
-         * 
-         * Integer[] indexData = new Integer[20]; for (int i = 0; i < 20; i++) {
-         * indexData[i] = i + 1; } JComboBox<Integer> xComboBox = new
-         * JComboBox<>(indexData); InputContainer.add(xComboBox);
-         * 
-         * InputContainer.add(new JLabel("y:")); // JTextField yTextfield = new
-         * JTextField(); // yTextfield.setColumns(1); // InputContainer.add(yTextfield);
-         * JComboBox<Integer> yComboBox = new JComboBox<>(indexData);
-         * InputContainer.add(yComboBox);
-         * 
-         * InputContainer.add(new JLabel("Letter:")); // JTextField xTextfield = new
-         * JTextField(); // xTextfield.setColumns(1); // InputContainer.add(xTextfield);
-         * 
-         * Character[] list = new Character[26]; for (int i = 0; i < 26; i++) {
-         * list[i]=(char) (65 + i); } JComboBox<Character> letterComboBox = new
-         * JComboBox<>(list); InputContainer.add(letterComboBox);
-         */
         JButton voteButton = new JButton("Initiate a Vote");
         voteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // JSONObject vote = new JSONObject();
-                // vote.put("WORD", textField.getText());
-                // vote.put("COMMAND", "ADD");
-                // vote.put("MEANING",textArea.getText());
-                // bufferWrite.write(text.toJSONString()+"\n");
-                // bufferWrite.write("ADD"+"$$$"+textField.getText()+"$$$"+textArea.getText()+"\n");
-                // bufferWrite.flush();
-                // bufferWrite.write(arg0);
-                //
                 if (turn && getStatus().equals("AFTER_SECOND_CLICK")) {
 
                     try {
@@ -251,8 +195,6 @@ public class Crossword {
 
                         JSONObject sent2 = new JSONObject();
                         sent.put("COMMAND", "COORD");
-                        // JSONObject word = new JSONObject();
-                        // word.put("WORD", getWord());
                         JSONObject message2 = new JSONObject();
                         message2.put("X1", getFirstX());
                         message2.put("Y1", getFirstY());
@@ -263,36 +205,6 @@ public class Crossword {
                         bufferWrite.write(sent.toJSONString() + "\n");
                         bufferWrite.flush();
 
-                        /*
-                        sent.put("MESSAGE", message);
-                        bufferWrite.write(sent.toJSONString() + "\n");
-                        bufferWrite.flush();
-                        
-                        JSONObject sent3 = new JSONObject();
-                        sent.put("COMMAND", "COORD");
-                        // JSONObject word = new JSONObject();
-                        // word.put("WORD", getWord());
-                        JSONObject message3 = new JSONObject();
-                        message.put("Y1", getFirstY());
-                        sent.put("MESSAGE", message);
-                        bufferWrite.write(sent.toJSONString() + "\n");
-                        bufferWrite.flush();
-                        JSONObject sent4 = new JSONObject();
-                        sent.put("COMMAND", "COORD");
-                        // JSONObject word = new JSONObject();
-                        // word.put("WORD", getWord());
-                        JSONObject message4 = new JSONObject();
-                        message.put("X2", getX());
-                        sent.put("MESSAGE", message);
-                        bufferWrite.write(sent.toJSONString() + "\n");
-                        bufferWrite.flush();
-                        JSONObject sent5 = new JSONObject();
-                        sent.put("COMMAND", "COORD");
-                        // JSONObject word = new JSONObject();
-                        // word.put("WORD", getWord());
-                        JSONObject message5 = new JSONObject();
-                        message.put("Y2", getY());
-                        */
                         
                         
                         
@@ -310,49 +222,17 @@ public class Crossword {
             }
 
         });
-        // submitButton.addMouseListener(new MouseAdapter(){
-        // @Override
-        // public void mouseClicked(MouseEvent e) {
-        // int x = xComboBox.getSelectedIndex();
-        // int y = yComboBox.getSelectedIndex();
-        // int index = (x)*20+y;
-        // char l = (char) (65+letterComboBox.getSelectedIndex());
-        // if
-        // ((CrosswordPanel.textFields.get(index).getText().equals(String.valueOf("\u0020"))))
-        // {
-        // CrosswordPanel.textFields.get(index).setText(Character.toString(l));}
-        // Crossword.setStatus("WAITING");
-
-        // else
-
-        ;
-        // }
-
-        //
-        // });
-        // HandleJSON.sendCommand();
 
         JButton passButton = new JButton("Pass this Turn");
         passButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // JSONObject vote = new JSONObject();
-                // vote.put("WORD", textField.getText());
-                // vote.put("COMMAND", "ADD");
-                // vote.put("MEANING",textArea.getText());
-                // bufferWrite.write(text.toJSONString()+"\n");
-                // bufferWrite.write("ADD"+"$$$"+textField.getText()+"$$$"+textArea.getText()+"\n");
-                // bufferWrite.flush();
-                // bufferWrite.write(arg0);
-                //
                 if (turn && getStatus().equals("INPUT") || turn && getStatus().equals("AFTER_INPUT")) {
                     Crossword.setWord("");
 
                     try {
                         JSONObject sent = new JSONObject();
                         sent.put("COMMAND", "PASS");
-                        // JSONObject word = new JSONObject();
-                        // word.put("WORD", getWord());
                         JSONObject message = new JSONObject();
                         message.put("PASS", "YES");
                         sent.put("MESSAGE", message);
@@ -374,21 +254,10 @@ public class Crossword {
         scoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // JSONObject vote = new JSONObject();
-                // vote.put("WORD", textField.getText());
-                // vote.put("COMMAND", "ADD");
-                // vote.put("MEANING",textArea.getText());
-                // bufferWrite.write(text.toJSONString()+"\n");
-                // bufferWrite.write("ADD"+"$$$"+textField.getText()+"$$$"+textArea.getText()+"\n");
-                // bufferWrite.flush();
-                // bufferWrite.write(arg0);
-                //
 
                 try {
                     JSONObject sent = new JSONObject();
                     sent.put("COMMAND", "SCORE");
-                    // JSONObject word = new JSONObject();
-                    // word.put("WORD", getWord());
                     JSONObject message = new JSONObject();
                     message.put("SCORE", "YES");
                     sent.put("MESSAGE", message);
@@ -528,10 +397,6 @@ public class Crossword {
                                     int lastY = Crossword.getFirstY();
                                     int index = -1;
 
-                                    // System.out.println(inputX);
-                                    // System.out.println(inputY);
-                                    // System.out.println(lastX);
-                                    // System.out.println(lastY);
 
                                     // only one point is chosen
                                     if (xco == inputX && xco == lastX && yco == lastY && yco == inputY) {
@@ -636,8 +501,6 @@ public class Crossword {
                                         PromptWindow newFrame = new PromptWindow(
                                                 " Press Initiate a vote to start vote!");
                                         newFrame.setVisible(true);
-                                        // Crossword.CrosswordPanel.textFields.get(Crossword.getInd())
-                                        // .setBackground(Color.yellow);
                                         Crossword.setStatus("AFTER_SECOND_CLICK");
                                     } else if (turn && index == -1) {
                                         PromptWindow newFrame = new PromptWindow(" Input point not on the line!");

@@ -58,8 +58,6 @@ public class Vote extends JFrame {
                 try {
                     JSONObject sent = new JSONObject();
                     sent.put("COMMAND", "VOTING");
-                    // JSONObject word = new JSONObject();
-                    // word.put("WORD", getWord());
                     JSONObject message = new JSONObject();
                     message.put("VOTE", "YES");
                     sent.put("MESSAGE", message);
@@ -88,8 +86,6 @@ public class Vote extends JFrame {
                 try {
                     JSONObject sent = new JSONObject();
                     sent.put("COMMAND", "VOTING");
-                    // JSONObject word = new JSONObject();
-                    // word.put("WORD", getWord());
                     JSONObject message = new JSONObject();
                     message.put("VOTE", "NO");
                     sent.put("MESSAGE", message);

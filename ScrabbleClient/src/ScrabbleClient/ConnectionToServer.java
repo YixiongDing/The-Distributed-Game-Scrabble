@@ -23,15 +23,12 @@ public class ConnectionToServer {
 	}
 
 	public void connectionToServer() throws IOException {
-		// while (true) {
 			String content = new String();
 			while (myClient.getBufferReader() != null) {
 				String message = myClient.getBufferReader().readLine();
 				System.out.println("Server:" + message);
 				readMsg(message);
 			}
-			// System.out.println(1);
-			// }
 	}
 
 	public void readMsg(String message) {
@@ -40,8 +37,6 @@ public class ConnectionToServer {
 			if (serverJSON.containsKey("TURN")) {
 				cw.setTurnLabel("                   It's " + serverJSON.get("TURN") + "'s turn");
 				if (serverJSON.get("TURN").equals(myClient.getUserName())) {
-					// PromptWindow v = new PromptWindow("It is your turn! Please input!");
-					// v.setVisible(true);
 					cw.setTurn(true);
                     Crossword.CrosswordPanel.setColorAll();
 
@@ -120,9 +115,6 @@ public class ConnectionToServer {
 				}
 				System.out.println(userName_list);
 				Crossword.setScorebd(userName_list);
-				// Scoreboard v = new Scoreboard(userName_list);
-				//v.setVisible(true);
-
 
 			}
 

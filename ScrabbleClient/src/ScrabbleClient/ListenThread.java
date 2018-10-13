@@ -17,13 +17,11 @@ public class ListenThread extends Thread {
                 c.connectionToServer();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-//                System.out.println("IOException");
             }
         }
     }
 
     public void start() {
-        // System.out.println("Starting " + threadName );
         if (t == null) {
             t = new Thread(this);
             t.start();

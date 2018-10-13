@@ -116,18 +116,6 @@ public class InputWindow extends JFrame implements ActionListener {
             myClient.getBufferWrite().write(sendMessage.toJSONString() + "\n");
             myClient.getBufferWrite().flush();
             System.out.println(sendMessage.toJSONString());
-            // try {
-            // JSONObject checkJSON = (JSONObject)
-            // parser.parse(myClient.getBufferReader().readLine());
-            // System.out.println(checkJSON);
-            // System.out.println(myClient.getBufferReader().readLine());
-            // String meaning = (String) checkJSON.get("CHECK");
-
-            // } catch (IOException e1) {
-            // } catch (org.json.simple.parser.ParseException e1) {
-            // // TODO Auto-generated catch block
-            // e1.printStackTrace();
-            // }
 
         } catch (IOException e1) {
             // TODO Auto-generated catch block

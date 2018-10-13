@@ -66,20 +66,10 @@ public class Login {
         JButton btnLogin = new JButton("Login");
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                // try {
-                // lob frame = new lob();
-                // frame.setVisible(true);
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
-                // frame.setVisible(false);
-                // Random r = new Random();
-                // String userName = "user" + r.nextInt(999999);
                 String userName = textField.getText();
                 String address = textField_1.getText();
                 String portNumber = textField_2.getText();
                 myClient = new MyClient(address, portNumber, userName);
-                // MyClient myClient = new MyClient(textField.getText(), textField2.getText());
                 myClient.buildBufferRead();
                 myClient.buildBufferWrite();
                 bufferRead = myClient.getBufferReader();
@@ -93,8 +83,6 @@ public class Login {
                 }
 
                 if (myClient.getReady()) {
-                    // lob lobbyFrame = new lob();
-                    // lobbyFrame.setVisible(true);
                     Crossword c = new Crossword(myClient);
                     ListenThread t = new ListenThread(c, myClient);
                     t.start();
