@@ -17,11 +17,13 @@ public class ConnectionToServer {
 	private JSONParser parser = new JSONParser();
 	private Crossword cw;
 
+	
 	public ConnectionToServer(Crossword cw, MyClient myClient) {
 		this.cw = cw;
 		this.myClient = myClient;
 	}
 
+	
 	public void connectionToServer() throws IOException {
 			String content = new String();
 			while (myClient.getBufferReader() != null) {
