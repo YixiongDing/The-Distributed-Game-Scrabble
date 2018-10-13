@@ -1,3 +1,10 @@
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
+
+//ConnectionToClient.java is a Client connection related class, which store connection information, and enable 
+//the Server communicate with client through sendMessage and getMessage methods.
+
 package ScrabbleServer;
 
 import java.io.BufferedReader;
@@ -41,27 +48,27 @@ public class ConnectionToClient {
 		}
 		this.out = out;
 	}
-	
+	// getClientId will return Client ID
 	public int getClientId() {
 		return clientId;
 	}
-	
+	// getReader will return bufferedreader
 	protected BufferedReader getReader() {
 		return br;
 	}
-	
+	// getWriter will return bufferedwriter
 	protected BufferedWriter getWriter() {
 		return bw;
 	}
-	
+	// getSocket will return connection socket
 	protected Socket getSocket() {
 		return socket;
 	}
-	
+	// getUsername will return client's username
 	protected String getUserName() {
 		return this.userName;
 	}
-	
+	// sendMessage will send JSONObject message to the client
 	protected boolean sendMessage(JSONObject message) {
 		try {
 			this.bw.write(message.toJSONString()+"\n");
@@ -73,7 +80,7 @@ public class ConnectionToClient {
 			return false;
 		}
 	}
-	
+	// getMessage will read message from the client
 	protected JSONObject getMessage() {
 		try {
 			String inputRead = br.readLine();
