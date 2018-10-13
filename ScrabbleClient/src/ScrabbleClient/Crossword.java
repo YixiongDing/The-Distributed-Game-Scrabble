@@ -323,6 +323,8 @@ public class Crossword {
 		panel.setCrossword(crossword);
 	}
 
+	
+	// another class to build the panel where 20*20 input buttons are located
 	class InputPanel extends JPanel {
 
 	}
@@ -335,9 +337,9 @@ public class Crossword {
 
 		void setCrossword(char array[][]) {
 			removeAll();
-			int w = array.length;
-			int h = array[0].length;
-			setLayout(new GridLayout(w + 1, h + 1));
+			int w = array.length; // w = 20 in this case
+			int h = array[0].length;	// h = 20 in this case
+			setLayout(new GridLayout(w + 1, h + 1)); 
 			textFields = new ArrayList<JButton>();
 			label = new JLabel[w + 1][h + 1];
 			for (int x = -1; x < w; x++) {
@@ -345,6 +347,7 @@ public class Crossword {
 				add(new JLabel(String.valueOf(x + 1)));
 			}
 
+			// create the 20*20 buttons
 			for (int x = 0; x < h; x++) {
 				for (int y = 0; y < w; y++) {
 					char c = array[x][y];
@@ -369,6 +372,7 @@ public class Crossword {
 								boolean isEmpty = Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText()
 										.equals(String.valueOf("\u0020"));
 
+								// based on different status, the clicking on the button will allow different moves
 								if (turn && Crossword.getStatus().equals("INPUT") && isEmpty) {
 									Crossword.setinputX(xco);
 									Crossword.setinputY(yco);
@@ -415,10 +419,6 @@ public class Crossword {
 									if (xco == inputX && xco == lastX && yco == lastY && yco == inputY) {
 										Crossword.setWord(
 												Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText());
-										// System.out.println(Crossword.getInd());
-										// System.out.println(Crossword.CrosswordPanel.textFields.get(Crossword.getInd()));
-										// System.out.println(
-										// Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText());
 										index = 0;
 									}
 
@@ -540,6 +540,7 @@ public class Crossword {
 			repaint();
 		}
 
+		// this is to set the color to be the original light_gray
 		public static void setColorAll() {
 			for (JButton a : textFields) {
 				a.setBackground(Color.LIGHT_GRAY);
