@@ -186,7 +186,7 @@ public class Crossword {
     private void initialize() {
         f = new JFrame();
         f.setBounds(100, 100, 800, 800);
-        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().setLayout(new BorderLayout());
         f.setTitle(myClient.getUserName() + "'s game");
 
