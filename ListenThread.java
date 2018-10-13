@@ -4,18 +4,18 @@ import java.io.IOException;
 
 public class ListenThread extends Thread {
     private Thread t;
-    private LobbyConnectionToServer lobby1;
+    private ConnectionToServer cts;
 
 
-    ListenThread(lob lobby1, MyClient myClient) {
-        this.lobby1 = new LobbyConnectionToServer(lobby1, myClient);
+    ListenThread(lob lobby1,Crossword cs, MyClient myClient) {
+        this.cts = new ConnectionToServer(lobby1,cs, myClient);
     }
 
     public void run() {
         // Synchronize the threads!
-        synchronized (lobby1) {
+        synchronized (cts) {
             try {
-            	lobby1.lobbyConnectionToServer();
+            	cts.connectionToServer();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 System.out.println("IOException");

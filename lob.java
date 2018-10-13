@@ -4,6 +4,7 @@ package ScrabbleClient;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.TextField;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -44,16 +45,19 @@ import org.json.simple.parser.JSONParser;
  public class lob extends JFrame {
 
 	
-	    private DataModels model;
+
 	    private BufferedReader bufferRead;
 	    private BufferedWriter bufferWrite;
+	    private static JFrame f;
 	    private MyClient myClient;
 	    private Thread t;
 	    private JSONParser parser = new JSONParser();
 		public static int createstatus = 0;
+		public JList list;
+		private ArrayList <String> userlist=LobbyConnectionToServer.getuserlist();
 
 	    String inviteduser= null;
-	    String[] userlist = {"A","B","C","D","E"};
+
 	    
 	    
 	    
@@ -79,7 +83,11 @@ import org.json.simple.parser.JSONParser;
 
 	JScrollPane jsptextArea = new JScrollPane(textArea);
 	
-	JScrollPane scrollPane_1 = new JScrollPane();
+//	JScrollPane scrollPane_1 = new JScrollPane();
+	
+	JTextArea userlistArea = new JTextArea();
+	
+	TextField textField = new TextField();
 	
 	
     public lob(MyClient mc) throws IOException {
@@ -129,36 +137,44 @@ import org.json.simple.parser.JSONParser;
 		
 		   public  void initialize()
 		    {
-				setBounds(100, 100, 640, 455);
+
+		        setBounds(100, 100, 640, 455);
 		        setTitle("Lobby");
 		        setSize(WIDTH, HEIGHT);
 		        setResizable(false);
 		        setLayout(null);
 		        
-				setBounds(100, 100, 640, 455);
+		        setBounds(100, 100, 640, 455);
+
+		        textField.setBounds(467, 321, 147, 21);
 				StartButton.setBounds(172, 360, 120, 46);
+				
 				Logoutbutton.setBounds(324, 360, 120, 46);
 				InviteButton.setBounds(467, 319, 147, 23);
 				CreateButton.setBounds(27, 360, 120, 46);
 				textArea.setBounds(10, 11, 440, 327);
-				scrollPane_1.setBounds(467, 10, 147, 312);
+				userlistArea.setBounds(467, 10, 147, 312);
+//				scrollPane_1.setBounds(467, 10, 147, 312);
+				userlistArea.setBorder(BorderFactory.createTitledBorder("UserList"));
 				
 				StartButton.setBackground(Color.LIGHT_GRAY);
 				Logoutbutton.setBackground(Color.LIGHT_GRAY);
 				CreateButton.setBackground(Color.LIGHT_GRAY);
 				textArea.setWrapStyleWord(true); 
 				textArea.setLineWrap(true);
-				textArea.setLineWrap(true);
 				textArea.setEditable(false);
-				scrollPane_1.setColumnHeaderView(btnRefresh);
+				userlistArea.setWrapStyleWord(true); 
+				userlistArea.setLineWrap(true);
+				userlistArea.setEditable(false);
+//				scrollPane_1.setColumnHeaderView(btnRefresh);
 				
 
-		        this.add(StartButton);
-		        this.add(Logoutbutton);
-		        this.add(InviteButton);
-		        this.add(CreateButton);
-		        this.add(textArea);
-		        this.add(scrollPane_1);
+				add(StartButton);
+				add(Logoutbutton);
+				add(InviteButton);
+				add(CreateButton);
+				add(textArea);
+				add(userlistArea);
 		        StartButton.setEnabled(false);
 		        StartButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -204,7 +220,7 @@ import org.json.simple.parser.JSONParser;
 					}
 				});
 				
-				btnRefresh.addActionListener(new ActionListener() {
+/*				btnRefresh.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 		                try {
 	                    JSONObject sent = new JSONObject();
@@ -223,21 +239,22 @@ import org.json.simple.parser.JSONParser;
 
 
 					}
-				});
+				});*/
 				 InviteButton.addActionListener(new ActionListener() {
 				 	public void actionPerformed(ActionEvent e) {
 		                try {
+		                	inviteduser=textField.getText().trim();
 		                	if (inviteduser == null) {
 		                	new MessageUI("please find a player.");
 		                	}else {
-	                    JSONObject sent = new JSONObject();
-	                    sent.put("COMMAND", "INVITE");
-	                    sent.put("MESSAGE", inviteduser);
-	                    myClient.getBufferWrite().write(sent.toJSONString() + "\n");
-	                    myClient.getBufferWrite().flush();
-	                    System.out.println(sent.toJSONString());
-				 		
-		                System.out.println(inviteduser);
+		                		JSONObject sent = new JSONObject();
+		                		sent.put("COMMAND", "INVITE");
+		                		sent.put("MESSAGE", inviteduser);
+		                		myClient.getBufferWrite().write(sent.toJSONString() + "\n");
+		                		myClient.getBufferWrite().flush();
+		                		new MessageUI("Sent invition to "+inviteduser);
+		                		System.out.println(sent.toJSONString());
+				 				System.out.println(inviteduser);
 		                }
 	                } catch (IOException e1) {
 	                    // TODO Auto-generated catch block
@@ -284,30 +301,30 @@ import org.json.simple.parser.JSONParser;
 				 		
 				 	}
 				 });
-		        model = new DataModels(); 
-				JList list = new JList(model);
-				scrollPane_1.setViewportView(list);
+//		        model = new DataModels(); 
+//				JList list = new JList(model);
 
-				 list.setBorder(BorderFactory.createTitledBorder("UserList"));
+
+/*				 list.setBorder(BorderFactory.createTitledBorder("UserList"));
 			        list.addMouseListener(new MouseAdapter() 
 			                {
 			                    public void mousePressed(MouseEvent e) 
 			                    {
-
+			                    	if(inviteduser != null) {
 			                        int i = list.getSelectedIndex();
 
-			                        inviteduser = userlist[i];
+			                        inviteduser = userlist.get(i);
 			                        System.out.println(inviteduser);
 			                        
 
-			                    	
+			                    	}
 
 			                    }
 			                });
-				 
+				 */
 
 				
-			        setVisible(true);
+//			        f.setVisible(true);
 	}
 			public  void textappend(String string) {
 				textArea.append(string);
@@ -321,20 +338,35 @@ import org.json.simple.parser.JSONParser;
 				StartButton.setEnabled(b);
 				
 			}
+		    public void setlobby(boolean b) {
+		        this.setVisible(b);
+		    }
+			public  void appenduser(String user) {
+				userlistArea.setText(user);
+				
+			}
+			public  void setuserlist() {
+				userlistArea.setText("");
+				
+			}
 
 }
- class DataModels extends DefaultListModel
+/* class DataModels extends DefaultListModel
  {
-	    String[] userlist = {"A","B","C","D","E"};
+	
 
      public DataModels()
      {
-         for (int i = 0; i < userlist.length; i++) 
+    	 if (ConnectionToServer.getuserlist() != null) {
+         for (int i = 0; i < ConnectionToServer.getuserlist().size(); i++) 
          {
-             addElement(userlist[i]);
+
+        		 addElement(ConnectionToServer.getuserlist().get(i));
+        	 
          }
      }
- }
+    }
+ }*/
 
 
     

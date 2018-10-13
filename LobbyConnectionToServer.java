@@ -18,7 +18,8 @@ public class LobbyConnectionToServer {
     private JSONParser parser = new JSONParser();
 	private lob lob;
 	public static int createstatus = 0;
-	
+	public static int loginstatus = 0;
+	public static ArrayList <String> userlist;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     
     public LobbyConnectionToServer(lob lob2, MyClient myClient) {
@@ -54,7 +55,7 @@ public class LobbyConnectionToServer {
 
                   }else if(createstatus==1) {
                       new MessageUI("Create a game room successfully.");
-                      lob.turnCreateButton(false);
+                      lob.setlobby(true);
                       lob.turnStartButton(true);
                   }else if(createstatus==2) {
                       new MessageUI("There is a game in progress, please try again later.");
@@ -63,14 +64,29 @@ public class LobbyConnectionToServer {
                   
                   
                   System.out.println(createstatus);
-             }else if (serverJSON.containsKey("INVITED")) {
+             }else if (serverJSON.containsKey("LOGINSTATUS")) {
+            	 loginstatus = Integer.parseInt(serverJSON.get("LOGINSTATUS").toString());
+                 if(loginstatus==0) {
+                     new MessageUI("Waiting for the server to respond, please try again later.");
+
+                 }else if(loginstatus==1) {
+                     new MessageUI("login successfully.");
+                     lob.turnCreateButton(false);
+                     lob.turnStartButton(true);
+                 }else if(loginstatus==2) {
+                     new MessageUI("Username already exists, please re-enter");
+                 }
+                 
+                 
+                 
+                 System.out.println(createstatus);
+            }else if (serverJSON.containsKey("INVITED")) {
                  Vote v = new Vote("     Being invited to a game, join?", myClient);
                  v.setVisible(true);
             
          }else if (serverJSON.containsKey("USERLIST")) {
-         	ArrayList <String> list = (ArrayList <String>) serverJSON.get("USERLIST");
-         	int size=list.size();
-         	String[] userlist = (String[])list.toArray(new String[size]);
+         	 userlist = (ArrayList <String>) serverJSON.get("USERLIST");
+
          }
          else if (serverJSON.containsKey("MESSAGE")) {
          	String messages = (String)serverJSON.get("MESSAGE");
@@ -82,6 +98,12 @@ public class LobbyConnectionToServer {
          	System.out.println("ParseException");
              e.printStackTrace();
          }
+    }
+    
+    
+    
+    public static ArrayList <String> getuserlist() {
+        return userlist;
     }
 }
 /*        

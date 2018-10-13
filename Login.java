@@ -74,7 +74,7 @@ public class Login {
                 // Random r = new Random();
                 // String userName = "user" + r.nextInt(999999);
                 String userName = textField.getText();
-                myClient = new MyClient("10.13.79.90", String.valueOf(12345), userName);
+                myClient = new MyClient("10.13.73.168", String.valueOf(12345), userName);
                 // MyClient myClient = new MyClient(textField.getText(), textField2.getText());
                 myClient.buildBufferRead();
                 myClient.buildBufferWrite();
@@ -91,10 +91,11 @@ public class Login {
                 if (myClient.getReady()) {
 
 					try { 
+						Crossword c = new Crossword(myClient);
 						lob lobbyFrame1 = new lob(myClient);
-
-	                    ListenThread t = new ListenThread(lobbyFrame1, myClient);
+	                    ListenThread t = new ListenThread(lobbyFrame1,c, myClient);
 	                    t.start();
+	                    lobbyFrame1.turnStartButton(false);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -128,5 +129,11 @@ public class Login {
         frame.getContentPane().add(lblUsername);
     }
 
+	
 
-}
+		
+	}
+
+   
+
+
