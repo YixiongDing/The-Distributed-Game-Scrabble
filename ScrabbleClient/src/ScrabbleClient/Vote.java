@@ -26,9 +26,6 @@ public class Vote extends JFrame {
     private JPanel contentPane;
     private JLabel lblIsA;
 
-    /**
-     * Launch the application.
-     */
 
     /**
      * Create the frame.
@@ -54,6 +51,7 @@ public class Vote extends JFrame {
         gbc_lblIsA.gridy = 3;
         contentPane.add(lblIsA, gbc_lblIsA);
 
+        // two buttons are allowed yes and no
         JButton btnYes = new JButton("Yes");
         btnYes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -64,6 +62,7 @@ public class Vote extends JFrame {
                     message.put("VOTE", "YES");
                     sent.put("MESSAGE", message);
                     myClient.getBufferWrite().write(sent.toJSONString() + "\n");
+                    // if pressed yes, a json message is sent.
                     myClient.getBufferWrite().flush();
                     System.out.println(sent.toJSONString());
                     Crossword.CrosswordPanel.setColorAll();
@@ -92,6 +91,8 @@ public class Vote extends JFrame {
                     message.put("VOTE", "NO");
                     sent.put("MESSAGE", message);
                     myClient.getBufferWrite().write(sent.toJSONString() + "\n");
+                    // if pressed no, another json message is sent.
+
                     myClient.getBufferWrite().flush();
                     System.out.println(sent.toJSONString());
                     Crossword.CrosswordPanel.setColorAll();
