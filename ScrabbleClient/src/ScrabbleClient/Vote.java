@@ -1,4 +1,6 @@
 package ScrabbleClient;
+//this is a vote window in which the voting messages received from the server will be displayed.
+// this allows the player to vote whether a word is valid or not.
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

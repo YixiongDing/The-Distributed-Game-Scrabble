@@ -1,4 +1,5 @@
 package ScrabbleClient;
+//this is a scoreboard window in which the scores received from the server will be displayed.
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
