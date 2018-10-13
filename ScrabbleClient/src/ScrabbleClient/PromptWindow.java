@@ -1,5 +1,7 @@
 package ScrabbleClient;
 
+
+// this is a prompt window in which some messages received from the server will be displayed.
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -24,9 +26,6 @@ public class PromptWindow extends JFrame implements ActionListener{
 	private static String promptText="Prompt Message";
     private static PromptWindow frame;
 
-	/**
-	 * Launch the application.
-	 */
 
 	/**
 	 * Create the frame.

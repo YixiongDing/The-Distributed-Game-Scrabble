@@ -1,4 +1,5 @@
 package ScrabbleClient;
+//this is a prompt window in which some messages received from the server will be displayed.
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
