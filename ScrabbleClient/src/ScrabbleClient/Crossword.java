@@ -48,17 +48,17 @@ public class Crossword {
 	private static BufferedWriter bufferWrite;
 	private static MyClient myClient;
 	private JSONParser parser = new JSONParser();
-	private static JTextArea txtrUsername;
+	private static JTextArea txtSCORE;
 
 	private static boolean turn = false;
 	private static JLabel turnLabel = new JLabel("");
 
 	// Parse the score from the server 
 	public static void setScorebd(ArrayList<String> a) {
-		txtrUsername.setText("");
-		txtrUsername.append("Scoreboard:\n");
+		txtSCORE.setText("");
+		txtSCORE.append("Scoreboard:\n");
 		for (String s : a) {
-			txtrUsername.append(s+"\n");
+			txtSCORE.append(s+"\n");
 		}
 	}
 
@@ -282,21 +282,24 @@ public class Crossword {
 
 		});
 
+		// add all the buttons on the panel
+		
 		InputContainer.add(voteButton);
 		InputContainer.add(passButton);
 		InputContainer.add(scoreButton);
 		InputContainer.add(turnLabel);
 		f.getContentPane().add(InputContainer, BorderLayout.SOUTH);
 
+		// add a panel to display scores
 		JPanel InputContainer2 = new JPanel(new FlowLayout());
-		txtrUsername = new JTextArea();
-		txtrUsername.setBackground(Color.LIGHT_GRAY);
-		txtrUsername.setBounds(0, 0, 300, 800);
-		txtrUsername.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		txtrUsername.setText("SCROEBOARD");
-		txtrUsername.setLineWrap(true);
+		txtSCORE = new JTextArea(); // this is the score display textarea
+		txtSCORE.setBackground(Color.LIGHT_GRAY);
+		txtSCORE.setBounds(0, 0, 300, 800);
+		txtSCORE.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		txtSCORE.setText("SCROEBOARD");
+		txtSCORE.setLineWrap(true);
 
-		InputContainer2.add(txtrUsername);
+		InputContainer2.add(txtSCORE);
 
 		f.getContentPane().add(InputContainer2, BorderLayout.EAST);
 
