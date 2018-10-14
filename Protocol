@@ -27,3 +27,14 @@ SERVER:
 INVITE: (YES, [USERNAME=SENDER, USER=RECEIVER]),(NO, [USERNAME=SENDER, USER=RECEIVER])
 GAME: USERNAME
 USERLIST:[USERNAME,…]
+
+
+ClientSend:                                                 ServerSend：
+LOGIN: Consider duplicate username？                        *****
+CREATE:USERNAME                                             CREATESTATUS:if 1(int)(meanings Created successfully) else 2（int）(meanings cant create,one game in progress)
+APPLYSTART                                                  START (Only players in the room will receive)
+JOIN :可以考虑没有JOIN，只能被房主邀请                         *****
+INVITE:USERNAME(Invited User)                               INVITED
+ACCEPTED:USERNAME(accepted User) 
+RFLIST                                                      USERLIST:[USERNAME,…]
+                                                            MESSAGE:MESSAGE(信息栏)
