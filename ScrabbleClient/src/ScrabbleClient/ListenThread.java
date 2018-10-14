@@ -21,10 +21,6 @@ public class ListenThread extends Thread {
             try {
                 c.connectionToServer();
             } catch (IOException e) {
-<<<<<<< HEAD:ScrabbleClient/src/ScrabbleClient/ListenThread.java
-=======
-                // TODO Auto-generated catch block
->>>>>>> 25290f767d9576f8c3408c7d68c03b7f511439e2:ScrabbleClient/src/ScrabbleClient/ListenThread.java
             }
         }
     }

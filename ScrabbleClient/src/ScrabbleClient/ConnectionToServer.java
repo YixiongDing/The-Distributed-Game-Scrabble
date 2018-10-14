@@ -39,37 +39,26 @@ public class ConnectionToServer {
 			}
 	}
 
-<<<<<<< HEAD
 	//handle the message received from the server
 	public void readMsg(String message) {
 		try {
 			//Turn Protocol
-=======
-	public void readMsg(String message) {
-		try {
->>>>>>> 25290f767d9576f8c3408c7d68c03b7f511439e2
 			JSONObject serverJSON = (JSONObject) parser.parse(message);
 			if (serverJSON.containsKey("TURN")) {
 				cw.setTurnLabel("                   It's " + serverJSON.get("TURN") + "'s turn");
 				if (serverJSON.get("TURN").equals(myClient.getUserName())) {
 					cw.setTurn(true);
                     Crossword.CrosswordPanel.setColorAll();
-<<<<<<< HEAD
 				}
 				//Vote INIT Protocol
-=======
 
-				}
->>>>>>> 25290f767d9576f8c3408c7d68c03b7f511439e2
 			} else if (serverJSON.containsKey("VOTE")) {
 				String voteWord = (String) serverJSON.get("VOTE");
 				Vote v = new Vote("     Is \"" + voteWord + "\" a word?", myClient);
 				v.setVisible(true);
-<<<<<<< HEAD
-				//New Letter Protocol
-=======
 
->>>>>>> 25290f767d9576f8c3408c7d68c03b7f511439e2
+				//New Letter Protocol
+
 			} else if (serverJSON.containsKey("COMMAND")) {
 				if (serverJSON.get("COMMAND").equals("NEW")) {
 					JSONObject newLetter = (JSONObject) serverJSON.get("MESSAGE");
@@ -77,10 +66,9 @@ public class ConnectionToServer {
 					String letter = (String) newLetter.get("LETTER");
 					Crossword.CrosswordPanel.textFields.get(index).setText(letter);
 				}
-<<<<<<< HEAD
+
 				// COORD Protocol
-=======
->>>>>>> 25290f767d9576f8c3408c7d68c03b7f511439e2
+
 				if (serverJSON.get("COMMAND").equals("COORD")) {
 					JSONObject Coord = (JSONObject) serverJSON.get("MESSAGE");
 					int lastX =  ((Long) Coord.get("X1")).intValue();
