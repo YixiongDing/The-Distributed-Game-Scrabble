@@ -1,20 +1,16 @@
 // Project Name: Distributed System Project 2
 // Team name: Onmyoji
 // Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
-package ScrabbleClient;
-// This is the vote where the vote message from the server is displayed.
-// The client will choose to vote the validity of the word and send Yes/No to server.
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
+
+package ScrabbleClient;
+//this is a invitation window in which the invitation messages received from the server will be displayed.
+//this allows the player to accept or not accept the invitation.
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import org.json.simple.JSONObject;
-
 import java.awt.GridBagLayout;
-import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
 import java.awt.Insets;
@@ -23,17 +19,21 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
-public class Vote extends JFrame {
+public class Invited extends JFrame {
 
     private JPanel contentPane;
     private JLabel lblIsA;
 
     /**
+     * Launch the application.
+     */
+
+    /**
      * Create the frame.
      */
-    public Vote(String word, MyClient myClient) {
-    	setTitle(myClient.getUserName() + "'s game");
+    public Invited(String word, MyClient myClient) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setTitle(myClient.getUserName() + "'s game");
         setBounds(100, 100, 350, 197);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -58,11 +58,10 @@ public class Vote extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 try {
                     JSONObject sent = new JSONObject();
-                    sent.put("COMMAND", "VOTING");
-                    JSONObject message = new JSONObject();
-                    message.put("VOTE", "YES");
-                    sent.put("MESSAGE", message);
+                    sent.put("COMMAND", "ACCEPTANCE");
+                    sent.put("MESSAGE", "YES");
                     myClient.getBufferWrite().write(sent.toJSONString() + "\n");
+                    // if pressed yes, a json message is sent.
                     myClient.getBufferWrite().flush();
                     System.out.println(sent.toJSONString());
                     dispose();
@@ -84,11 +83,10 @@ public class Vote extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     JSONObject sent = new JSONObject();
-                    sent.put("COMMAND", "VOTING");
-                    JSONObject message = new JSONObject();
-                    message.put("VOTE", "NO");
-                    sent.put("MESSAGE", message);
+                    sent.put("COMMAND", "ACCEPTANCE");
+                    sent.put("MESSAGE", "NO");
                     myClient.getBufferWrite().write(sent.toJSONString() + "\n");
+                    // if pressed no, another json message is sent.
                     myClient.getBufferWrite().flush();
                     System.out.println(sent.toJSONString());
                     dispose();

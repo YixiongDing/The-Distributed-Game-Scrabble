@@ -2,8 +2,8 @@
 // Team name: Onmyoji
 // Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
 
-//ConnectionToClient.java is a Client connection related class, which store connection information, and enable 
-//the Server communicate with client through sendMessage and getMessage methods.
+// ConnectionToClient.java is a Client connection related class, which store connection information, and enable 
+// the Server communicate with client through sendMessage and getMessage methods.
 
 package ScrabbleServer;
 
