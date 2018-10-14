@@ -106,27 +106,11 @@ public class ConnectionToServer {
 							index = (i - 1) * 20 + yco - 1;
 							Crossword.CrosswordPanel.textFields.get(index).setBackground(Color.yellow);
 						}
-<<<<<<< HEAD
 					}
 				}
 			}
 			//Scoreboard Protocol
-=======
 
-
-
-
-
-
-
-
-					}
-
-
-				}
-			}
-
->>>>>>> 25290f767d9576f8c3408c7d68c03b7f511439e2
 			else if (serverJSON.containsKey("SCOREBOARD")) {
 				ArrayList <String> userName_list = new ArrayList<String>();
 				JSONObject a = new JSONObject();
@@ -138,17 +122,9 @@ public class ConnectionToServer {
 				}
 				System.out.println(userName_list);
 				Crossword.setScorebd(userName_list);
-<<<<<<< HEAD
-			}
-
 			//Game End Protocol
-=======
-
 			}
 
-
-
->>>>>>> 25290f767d9576f8c3408c7d68c03b7f511439e2
 			else if (serverJSON.containsKey("END")) {
 				ArrayList<String> userName_list = new ArrayList<String>();
 				JSONObject a = new JSONObject();
