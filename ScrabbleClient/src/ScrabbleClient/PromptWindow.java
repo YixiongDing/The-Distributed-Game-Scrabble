@@ -1,5 +1,11 @@
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
+
 package ScrabbleClient;
 
+
+// this is a prompt window in which some messages received from the server will be displayed.
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -17,24 +23,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
-public class PromptWindow3 extends JFrame implements ActionListener{
+public class PromptWindow extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	private JLabel lblIsA;
 	private static String promptText="Prompt Message";
-    private static PromptWindow3 frame;
-    
+    private static PromptWindow frame;
 
-	/**
-	 * Launch the application.
-	 */
 
 	/**
 	 * Create the frame.
 	 */
-	public PromptWindow3(String a,MyClient myClient) {
+	public PromptWindow(String a) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 350, 150);
+		setBounds(100, 100, 250, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -58,15 +60,16 @@ public class PromptWindow3 extends JFrame implements ActionListener{
 		btnGoBack.addMouseListener(new MouseAdapter(){
         	@Override
     		public void mouseClicked(MouseEvent e) {
-    			
-        		setEnabled(true);
+                setEnabled(true);
+
+
         	}
     				
     		
     		
     	});
 		GridBagConstraints gbc_btnYes = new GridBagConstraints();
-		gbc_btnYes.insets = new Insets(30, 100, 5, 5);
+		gbc_btnYes.insets = new Insets(30, 50, 5, 5);
 		gbc_btnYes.gridx = 5;
 		gbc_btnYes.gridy = 5;
 		contentPane.add(btnGoBack, gbc_btnYes);
@@ -75,8 +78,8 @@ public class PromptWindow3 extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+			
 		setEnabled(true);
-
 		this.dispose();
 	}
 

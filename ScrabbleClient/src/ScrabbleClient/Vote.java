@@ -1,4 +1,10 @@
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
+
 package ScrabbleClient;
+//this is a vote window in which the voting messages received from the server will be displayed.
+// this allows the player to vote whether a word is valid or not.
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -24,9 +30,6 @@ public class Vote extends JFrame {
     private JPanel contentPane;
     private JLabel lblIsA;
 
-    /**
-     * Launch the application.
-     */
 
     /**
      * Create the frame.
@@ -52,20 +55,22 @@ public class Vote extends JFrame {
         gbc_lblIsA.gridy = 3;
         contentPane.add(lblIsA, gbc_lblIsA);
 
+        // two buttons are allowed yes and no
         JButton btnYes = new JButton("Yes");
         btnYes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 try {
                     JSONObject sent = new JSONObject();
                     sent.put("COMMAND", "VOTING");
-                    // JSONObject word = new JSONObject();
-                    // word.put("WORD", getWord());
                     JSONObject message = new JSONObject();
                     message.put("VOTE", "YES");
                     sent.put("MESSAGE", message);
                     myClient.getBufferWrite().write(sent.toJSONString() + "\n");
+                    // if pressed yes, a json message is sent.
                     myClient.getBufferWrite().flush();
                     System.out.println(sent.toJSONString());
+                    Crossword.CrosswordPanel.setColorAll();
+
                     dispose();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
@@ -86,14 +91,15 @@ public class Vote extends JFrame {
                 try {
                     JSONObject sent = new JSONObject();
                     sent.put("COMMAND", "VOTING");
-                    // JSONObject word = new JSONObject();
-                    // word.put("WORD", getWord());
                     JSONObject message = new JSONObject();
                     message.put("VOTE", "NO");
                     sent.put("MESSAGE", message);
                     myClient.getBufferWrite().write(sent.toJSONString() + "\n");
+                    // if pressed no, another json message is sent.
+
                     myClient.getBufferWrite().flush();
                     System.out.println(sent.toJSONString());
+                    Crossword.CrosswordPanel.setColorAll();
                     dispose();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block

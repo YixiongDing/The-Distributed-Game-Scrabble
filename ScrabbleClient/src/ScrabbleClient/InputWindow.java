@@ -1,5 +1,10 @@
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
+
 package ScrabbleClient;
 
+// this is the input window where all the input to the 20*20 gaming grid is conducted
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -38,17 +43,11 @@ public class InputWindow extends JFrame implements ActionListener {
     private static MyClient myClient;
     private JSONParser parser = new JSONParser();
 
-    /**
-     * Launch the application.
-     */
 
     public static InputWindow getFrame() {
         return frame;
     }
 
-    /**
-     * Create the frame.
-     */
     public InputWindow(Crossword c, MyClient mc) {
         this.myClient = mc;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -72,6 +71,7 @@ public class InputWindow extends JFrame implements ActionListener {
             list[i] = (char) (65 + i);
         }
 
+        // the combo box will allow a to z as input.
         comboBox = new JComboBox<>(list);
         GridBagConstraints gbc_comboBox = new GridBagConstraints();
         gbc_comboBox.insets = new Insets(0, 0, 5, 0);
@@ -116,18 +116,6 @@ public class InputWindow extends JFrame implements ActionListener {
             myClient.getBufferWrite().write(sendMessage.toJSONString() + "\n");
             myClient.getBufferWrite().flush();
             System.out.println(sendMessage.toJSONString());
-            // try {
-            // JSONObject checkJSON = (JSONObject)
-            // parser.parse(myClient.getBufferReader().readLine());
-            // System.out.println(checkJSON);
-            // System.out.println(myClient.getBufferReader().readLine());
-            // String meaning = (String) checkJSON.get("CHECK");
-
-            // } catch (IOException e1) {
-            // } catch (org.json.simple.parser.ParseException e1) {
-            // // TODO Auto-generated catch block
-            // e1.printStackTrace();
-            // }
 
         } catch (IOException e1) {
             // TODO Auto-generated catch block

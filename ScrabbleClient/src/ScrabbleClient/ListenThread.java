@@ -1,3 +1,8 @@
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
+
+//ListenThread.java is the thread that continuously listen to the server
 package ScrabbleClient;
 
 import java.io.IOException;
@@ -16,14 +21,11 @@ public class ListenThread extends Thread {
             try {
                 c.connectionToServer();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-//                System.out.println("IOException");
             }
         }
     }
 
     public void start() {
-        // System.out.println("Starting " + threadName );
         if (t == null) {
             t = new Thread(this);
             t.start();

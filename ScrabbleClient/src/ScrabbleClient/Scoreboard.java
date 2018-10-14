@@ -1,4 +1,9 @@
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
+
 package ScrabbleClient;
+//this is a scoreboard window in which the scores received from the server will be displayed.
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -18,25 +23,7 @@ public class Scoreboard extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	  
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Scoreboard frame = new Scoreboard(ArrayList<String> a);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	
-	 * Create the frame.
-	 */
 	public Scoreboard(ArrayList<String> toPrint) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -62,8 +49,6 @@ public class Scoreboard extends JFrame {
 		for (String a:toPrint) {
 		    txtrUsername.append(a+"\n");
 		}
-		//String txtFd = toPrint.toString();
-		//txtrUsername.setText(txtFd);
 
 		scrollPane.setViewportView(txtrUsername);
 	}

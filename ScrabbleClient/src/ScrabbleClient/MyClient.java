@@ -1,3 +1,9 @@
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
+
+//MyClient.java is used to save the variable about connection and connect to the Server
+
 package ScrabbleClient;
 
 import java.io.BufferedReader;
@@ -27,7 +33,6 @@ public class MyClient {
             this.address = address;
             this.port = port;
             this.socket = new Socket(address, Integer.parseInt(port));
-            // System.out.println("connected edison");
 
         } catch (NumberFormatException e1) {
             new MessageUI("please use right format of addressa and port number");
@@ -49,8 +54,6 @@ public class MyClient {
             this.bw = new BufferedWriter(osw);
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            // new Message("Socket can not be used, try use another address and port
-            // number");
             this.ready = false;
         }
     }
@@ -63,8 +66,6 @@ public class MyClient {
             InputStreamReader isr = new InputStreamReader(is);
             this.br = new BufferedReader(isr);
         } catch (Exception e) {
-            // new Message("Socket can not be used, try use another address and port
-            // number");
             this.ready = false;
         }
     }
@@ -91,10 +92,7 @@ public class MyClient {
         {
             // Closing the socket
             try {
-                // this.br.close();
-                // this.bw.close();
                 this.socket.close();
-                // System.out.print(this.socket.isClosed());
             } catch (Exception e) {
                 e.printStackTrace();
             }

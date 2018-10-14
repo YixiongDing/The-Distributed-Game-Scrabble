@@ -1,4 +1,8 @@
-//Student Name: Wuang Shen, Student ID:716090
+// Project Name: Distributed System Project 2
+// Team name: Onmyoji
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
+
+//this is a message window in which some warning messages be displayed.
 package ScrabbleClient;
 
 import java.awt.EventQueue;
