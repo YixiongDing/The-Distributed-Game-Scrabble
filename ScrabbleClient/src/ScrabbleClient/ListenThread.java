@@ -5,26 +5,21 @@
 //ListenThread.java is the thread that continuously listen to the server
 package ScrabbleClient;
 
-import java.io.IOException;
-
 public class ListenThread extends Thread {
     private Thread t;
-    private ConnectionToServer c;
+    private ConnectionToServer cts;
 
-    ListenThread(Crossword cw, MyClient myClient) {
-        this.c = new ConnectionToServer(cw, myClient);
+
+    ListenThread(lob lobby1,Crossword cs, MyClient myClient) {
+        this.cts = new ConnectionToServer(lobby1,cs, myClient);
     }
 
     public void run() {
         // Synchronize the threads!
-        synchronized (c) {
-            try {
-                c.connectionToServer();
-            } catch (IOException e) {
-            }
+        synchronized (cts) {
+            cts.connectionToServer();
         }
     }
-
     public void start() {
         if (t == null) {
             t = new Thread(this);

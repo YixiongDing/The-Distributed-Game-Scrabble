@@ -1,10 +1,8 @@
 // Project Name: Distributed System Project 2
 // Team name: Onmyoji
 // Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
-
 package ScrabbleClient;
-
-// this is the input window where all the input to the 20*20 gaming grid is conducted
+// this is the input window where the input of the letter is conducted.
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -43,11 +41,17 @@ public class InputWindow extends JFrame implements ActionListener {
     private static MyClient myClient;
     private JSONParser parser = new JSONParser();
 
+    /**
+     * Launch the application.
+     */
 
     public static InputWindow getFrame() {
         return frame;
     }
 
+    /**
+     * Create the frame.
+     */
     public InputWindow(Crossword c, MyClient mc) {
         this.myClient = mc;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -71,7 +75,6 @@ public class InputWindow extends JFrame implements ActionListener {
             list[i] = (char) (65 + i);
         }
 
-        // the combo box will allow a to z as input.
         comboBox = new JComboBox<>(list);
         GridBagConstraints gbc_comboBox = new GridBagConstraints();
         gbc_comboBox.insets = new Insets(0, 0, 5, 0);
@@ -106,6 +109,7 @@ public class InputWindow extends JFrame implements ActionListener {
         Crossword.setinputY(Crossword.getY());
 
         try {
+            //sending a json message of new letter and its coord.
             JSONObject sendMessage = new JSONObject();
             JSONObject message = new JSONObject();
             message.put("INDEX", Crossword.getInd());
@@ -123,7 +127,7 @@ public class InputWindow extends JFrame implements ActionListener {
         }
 
         this.dispose();
-        PromptWindow2 newFrame = new PromptWindow2("       Click a block with a letter as the start of a word!");
+        PromptWindow2 newFrame = new PromptWindow2("       Click a block with a letter as the start of a word!",myClient.getUserName());
         newFrame.setVisible(true);
 
     }

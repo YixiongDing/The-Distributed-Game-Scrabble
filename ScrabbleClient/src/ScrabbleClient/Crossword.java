@@ -3,8 +3,7 @@
 // Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
 
 package ScrabbleClient;
-
-// This is the main Scramble game window.
+// This is the main gaming window.
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,45 +31,44 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 
-
 public class Crossword {
-
 
 	private static JFrame f;
 	private static char[][] charSet;
 	private static String status = "INPUT";
-	private static int xCoordinate = -1; // record the current xCoordinate
-	private static int yCoordinate = -1; // record the current yCoordinate
-	private static int ind = -1;		// record the current index number in tha arraylist
-	private static int firstX = -1;		// record the xCoordinate of the first click during voting process
-	private static int firstY = -1;   	// record the yCoordinate of the first click during voting process
-	private static int inputX = -1;		// record the xCoordinate of input 
-	private static int inputY = -1;		// record the xCoordinate of input 
-	private static String word = "";	// the word of voting to be sent
+	private static int xCoordinate = -1; // record the last xCoordinate
+	private static int yCoordinate = -1; // record the last yCoordinate
+	private static int ind = -1; // record the last index
+	private static int firstX = -1; // record the xCoordinate of the first click
+	private static int firstY = -1;// record the yCoordinate of the first click
+	private static int inputX = -1;// record the input xCoordinate
+	private static int inputY = -1;// record the input yCoordinate
+	private static String word = "";// record the word to be voted
 
 	private static BufferedReader bufferRead;
 	private static BufferedWriter bufferWrite;
 	private static MyClient myClient;
 	private JSONParser parser = new JSONParser();
-	private static JTextArea txtSCORE;
+	private static JTextArea txtScoreboard;
 
 	private static boolean turn = false;
 	private static JLabel turnLabel = new JLabel("");
 
-	// Parse the score from the server 
+	// to display the scoreboard
 	public static void setScorebd(ArrayList<String> a) {
-		txtSCORE.setText("");
-		txtSCORE.append("Scoreboard:\n");
+		txtScoreboard.setText("");
+		txtScoreboard.append("Scoreboard:\n");
 		for (String s : a) {
-			txtSCORE.append(s+"\n");
+			txtScoreboard.append(s+"\n");
 		}
-	}
 
-	// display the turn info
+	}
+	// to display the turn
 	public static void setTurnLabel(String text) {
+
 		turnLabel.setText(text);
 	}
-	// set the turn
+
 	public static void setTurn(boolean a) {
 		turn = a;
 	}
@@ -79,7 +77,7 @@ public class Crossword {
 		return turn;
 	}
 
-	// set the vote word to be sent to the server
+
 	public static void setWord(String a) {
 		word = a;
 	}
@@ -88,18 +86,14 @@ public class Crossword {
 		return word;
 	}
 
-	// get the current stage of the game
 	public static String getStatus() {
 		return status;
 	}
-	
-	// set the current stage of the game
+
 	public static void setStatus(String a) {
 		status = a;
 	}
 
-	// set the coordinates 
-	
 	public static void setFirstX(int x) {
 		firstX = x;
 	}
@@ -107,28 +101,15 @@ public class Crossword {
 	public static void setFirstY(int y) {
 		firstY = y;
 	}
-	public static void setinputX(int x) {
-		inputX = x;
-	}
-
-	public static void setinputY(int y) {
-		inputY = y;
-	}
 
 	public static void setX(int x) {
 		xCoordinate = x;
-	}
-	public static void setY(int y) {
-		yCoordinate = y;
 	}
 
 	public static void setInd(int index) {
 		ind = index;
 	}
 
-	
-	
-	// the followings get the coordinates from the server.
 	public static int getInd() {
 		return ind;
 	}
@@ -141,6 +122,9 @@ public class Crossword {
 		return firstY;
 	}
 
+	public static void setY(int y) {
+		yCoordinate = y;
+	}
 
 	public static int getinputX() {
 		return inputX;
@@ -150,6 +134,13 @@ public class Crossword {
 		return inputY;
 	}
 
+	public static void setinputX(int x) {
+		inputX = x;
+	}
+
+	public static void setinputY(int y) {
+		inputY = y;
+	}
 
 	public static int getX() {
 		return xCoordinate;
@@ -158,9 +149,14 @@ public class Crossword {
 	public static int getY() {
 		return yCoordinate;
 	}
+	public void setcrossword(boolean b) {
+		f.setVisible(b);
 
+	}
 
-	
+	/**
+	 * Create the application.
+	 */
 	public Crossword(MyClient mc) {
 		this.myClient = mc;
 		this.bufferRead = myClient.getBufferReader();
@@ -175,8 +171,7 @@ public class Crossword {
 	private void initialize() {
 		f = new JFrame();
 		f.setBounds(100, 100, 800, 800);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		// this is set as exit on close to allow the player to exit if closing the window.
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.getContentPane().setLayout(new BorderLayout());
 		f.setTitle(myClient.getUserName() + "'s game");
 
@@ -189,7 +184,6 @@ public class Crossword {
 
 		JPanel InputContainer = new JPanel(new FlowLayout());
 
-		// a vote button
 		JButton voteButton = new JButton("Initiate a Vote");
 		voteButton.addActionListener(new ActionListener() {
 			@Override
@@ -197,8 +191,6 @@ public class Crossword {
 				if (turn && getStatus().equals("AFTER_SECOND_CLICK")) {
 
 					try {
-						// this will send two JSONObject: first one is the voting word
-						// second JSONObject is the coordinate to be highlighted.
 						JSONObject sent = new JSONObject();
 						sent.put("COMMAND", "VOTING");
 						JSONObject message = new JSONObject();
@@ -220,6 +212,7 @@ public class Crossword {
 						bufferWrite.write(sent.toJSONString() + "\n");
 						bufferWrite.flush();
 
+
 						System.out.println(sent.toJSONString());
 						setTurn(false);
 						setStatus("INPUT");
@@ -235,7 +228,6 @@ public class Crossword {
 
 		});
 
-		// the button will pass the turn.
 		JButton passButton = new JButton("Pass this Turn");
 		passButton.addActionListener(new ActionListener() {
 			@Override
@@ -263,7 +255,6 @@ public class Crossword {
 
 		});
 
-		// this will start a new window with Scoreboard
 		JButton scoreButton = new JButton("Scoreboard");
 		scoreButton.addActionListener(new ActionListener() {
 			@Override
@@ -286,31 +277,31 @@ public class Crossword {
 
 		});
 
-		// add all the buttons on the panel
-		
 		InputContainer.add(voteButton);
 		InputContainer.add(passButton);
 		InputContainer.add(scoreButton);
 		InputContainer.add(turnLabel);
 		f.getContentPane().add(InputContainer, BorderLayout.SOUTH);
 
-		// add a panel to display scores
 		JPanel InputContainer2 = new JPanel(new FlowLayout());
-		txtSCORE = new JTextArea(); // this is the score display textarea
-		txtSCORE.setBackground(Color.LIGHT_GRAY);
-		txtSCORE.setBounds(0, 0, 300, 800);
-		txtSCORE.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		txtSCORE.setText("SCROEBOARD");
-		txtSCORE.setLineWrap(true);
+		txtScoreboard = new JTextArea();
+		txtScoreboard.setBackground(Color.LIGHT_GRAY);
+		txtScoreboard.setBounds(0, 0, 300, 800);
+		txtScoreboard.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		txtScoreboard.setText("SCROEBOARD");
+		txtScoreboard.setLineWrap(true);
 
-		InputContainer2.add(txtSCORE);
+		InputContainer2.add(txtScoreboard);
 
 		f.getContentPane().add(InputContainer2, BorderLayout.EAST);
 
 		f.setSize(1650, 800);
 		f.setLocationRelativeTo(null);
-		f.setVisible(true);
 
+
+	}
+	public void setVisible(boolean b) {
+		this.f.setVisible(b);
 	}
 
 	private static void generate(CrosswordPanel panel) {
@@ -327,8 +318,6 @@ public class Crossword {
 		panel.setCrossword(crossword);
 	}
 
-	
-	// another class to build the panel where 20*20 input buttons are located
 	class InputPanel extends JPanel {
 
 	}
@@ -341,17 +330,15 @@ public class Crossword {
 
 		void setCrossword(char array[][]) {
 			removeAll();
-			int w = array.length; // w = 20 in this case
-			int h = array[0].length;	// h = 20 in this case
-			setLayout(new GridLayout(w + 1, h + 1)); 
+			int w = array.length;
+			int h = array[0].length;
+			setLayout(new GridLayout(w + 1, h + 1));
 			textFields = new ArrayList<JButton>();
 			label = new JLabel[w + 1][h + 1];
 			for (int x = -1; x < w; x++) {
-				// label[x][y] = new JLabel(String.valueOf(x+1));
 				add(new JLabel(String.valueOf(x + 1)));
 			}
 
-			// create the 20*20 buttons
 			for (int x = 0; x < h; x++) {
 				for (int y = 0; y < w; y++) {
 					char c = array[x][y];
@@ -361,7 +348,6 @@ public class Crossword {
 					if (c != 0) {
 						JButton newButton = new JButton(String.valueOf(c));
 						newButton.setBackground(Color.LIGHT_GRAY);
-						// textFields[x][y].setFont(textFields[x][y].getFont().deriveFont(20.0f));
 						newButton.setPreferredSize(new Dimension(60, 30)); // the widths of the textfileds
 						newButton.addMouseListener(new MouseAdapter() {
 							@Override
@@ -376,7 +362,6 @@ public class Crossword {
 								boolean isEmpty = Crossword.CrosswordPanel.textFields.get(Crossword.getInd()).getText()
 										.equals(String.valueOf("\u0020"));
 
-								// based on different status, the clicking on the button will allow different moves
 								if (turn && Crossword.getStatus().equals("INPUT") && isEmpty) {
 									Crossword.setinputX(xco);
 									Crossword.setinputY(yco);
@@ -387,18 +372,18 @@ public class Crossword {
 								}
 
 								else if (turn && Crossword.getStatus().equals("INPUT") && !isEmpty) {
-									PromptWindow newFrame = new PromptWindow("You can only type in an empty block!");
+									PromptWindow newFrame = new PromptWindow("You can only type in an empty block!",myClient.getUserName());
 									newFrame.setVisible(true);
 
 								}
 
 								else if (turn && Crossword.getStatus().equals("AFTER_INPUT") && isEmpty) {
-									PromptWindow newFrame = new PromptWindow("    Choose a block which has a letter!");
+									PromptWindow newFrame = new PromptWindow("    Choose a block which has a letter!",myClient.getUserName());
 									newFrame.setVisible(true);
 								}
 
 								else if (turn && Crossword.getStatus().equals("AFTER_INPUT") && !isEmpty) {
-									PromptWindow newFrame = new PromptWindow("    Click the last letter of the word!");
+									PromptWindow newFrame = new PromptWindow("    Click the last letter of the word!",myClient.getUserName());
 									newFrame.setVisible(true);
 									Crossword.CrosswordPanel.textFields.get(Crossword.getInd())
 									.setBackground(Color.yellow);
@@ -407,7 +392,7 @@ public class Crossword {
 									Crossword.setFirstY(yco);
 
 								} else if (turn && Crossword.getStatus().equals("AFTER_FIRST_CLICK") && isEmpty) {
-									PromptWindow newFrame = new PromptWindow("    Choose a block which has a letter!");
+									PromptWindow newFrame = new PromptWindow("    Choose a block which has a letter!",myClient.getUserName());
 									newFrame.setVisible(true);
 								}
 
@@ -432,7 +417,7 @@ public class Crossword {
 											String s = Crossword.CrosswordPanel.textFields.get(index).getText();
 											if (s.equals(String.valueOf("\u0020"))) {
 												PromptWindow newFrame = new PromptWindow(
-														" Empty block in between. Start again!");
+														" Empty block in between. Start again!",myClient.getUserName());
 												Crossword.setStatus("AFTER_INPUT");
 												newFrame.setVisible(true);
 												index = -2;
@@ -452,7 +437,7 @@ public class Crossword {
 											String s = Crossword.CrosswordPanel.textFields.get(index).getText();
 											if (s.equals(String.valueOf("\u0020"))) {
 												PromptWindow newFrame = new PromptWindow(
-														" Empty block in between. Start again!");
+														" Empty block in between. Start again!",myClient.getUserName());
 												Crossword.setStatus("AFTER_INPUT");
 												newFrame.setVisible(true);
 												index = -2;
@@ -478,7 +463,7 @@ public class Crossword {
 												System.out.println(xco);
 
 												PromptWindow newFrame = new PromptWindow(
-														" Empty block in between. Start again!");
+														" Empty block in between. Start again!",myClient.getUserName());
 												Crossword.setStatus("AFTER_INPUT");
 												newFrame.setVisible(true);
 												index = -2;
@@ -499,7 +484,7 @@ public class Crossword {
 											if (s.equals(String.valueOf("\u0020"))) {
 
 												PromptWindow newFrame = new PromptWindow(
-														" Empty block in between. Start again!");
+														" Empty block in between. Start again!",myClient.getUserName());
 												Crossword.setStatus("AFTER_INPUT");
 												newFrame.setVisible(true);
 												index = -2;
@@ -516,11 +501,11 @@ public class Crossword {
 
 									if (turn && index > -1) {
 										PromptWindow newFrame = new PromptWindow(
-												" Press Initiate a vote to start vote!");
+												" Press Initiate a vote to start vote!",myClient.getUserName());
 										newFrame.setVisible(true);
 										Crossword.setStatus("AFTER_SECOND_CLICK");
 									} else if (turn && index == -1) {
-										PromptWindow newFrame = new PromptWindow(" Input point not on the line!");
+										PromptWindow newFrame = new PromptWindow(" Input point not on the line!",myClient.getUserName());
 										newFrame.setVisible(true);
 										Crossword.setWord("");
 
@@ -544,10 +529,14 @@ public class Crossword {
 			repaint();
 		}
 
-		// this is to set the color to be the original light_gray
 		public static void setColorAll() {
 			for (JButton a : textFields) {
 				a.setBackground(Color.LIGHT_GRAY);
+			}
+		}
+		public static void removeALL() {
+			for (JButton a : textFields) {
+				a.setText(String.valueOf("\u0020"));
 			}
 		}
 
@@ -560,4 +549,7 @@ public class Crossword {
 		}
 
 	}
+
+
+
 }

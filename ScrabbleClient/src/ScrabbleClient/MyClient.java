@@ -2,10 +2,8 @@
 // Team name: Onmyoji
 // Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
 
-//MyClient.java is used to save the variable about connection and connect to the Server
-
+//MyClient.java is used to save the variable about connection and connect to the Serverpackage ScrabbleClient;
 package ScrabbleClient;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -35,13 +33,13 @@ public class MyClient {
             this.socket = new Socket(address, Integer.parseInt(port));
 
         } catch (NumberFormatException e1) {
-            new MessageUI("please use right format of addressa and port number");
+            new MessageUI2("please use right format of addressa and port number");
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
-            new MessageUI("this address is unkown");
+            new MessageUI2("this address is unkown");
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            new MessageUI("Can not connect to the Server, try another address and port number");
+            new MessageUI2("Can not connect to the Server, try another address and port number");
         }
     }
 
@@ -81,7 +79,10 @@ public class MyClient {
     public Boolean getReady() {
         return this.ready;
     }
-
+    
+    public void setReady(Boolean ready) {
+    	this.ready = ready;
+    }
     public Socket getSocket() {
         return this.socket;
     }

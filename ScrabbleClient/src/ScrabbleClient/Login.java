@@ -1,9 +1,7 @@
 // Project Name: Distributed System Project 2
 // Team name: Onmyoji
-// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
-
+// Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu package ScrabbleClient;
 package ScrabbleClient;
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -19,10 +17,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javax.swing.JLabel;
-
+//This is the login window.
 public class Login {
 
     private JFrame frame;
@@ -33,7 +32,6 @@ public class Login {
     private static MyClient myClient;
     private JTextField textField_1;
     private JTextField textField_2;
-
     /**
      * Launch the application.
      */
@@ -70,30 +68,47 @@ public class Login {
         JButton btnLogin = new JButton("Login");
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                String userName = textField.getText();
-                String address = textField_1.getText();
-                String portNumber = textField_2.getText();
+                String userName = textField.getText().trim();               
+                String address = textField_1.getText().trim();
+                String portNumber = textField_2.getText().trim();
+                //get the username,address,portnumber
+                if("".equals(userName)||"".equals(address)||"".equals(address)) {
+                    new MessageUI2("Input can not be empty, please input again.");
+                }else {
                 myClient = new MyClient(address, portNumber, userName);
                 myClient.buildBufferRead();
                 myClient.buildBufferWrite();
                 bufferRead = myClient.getBufferReader();
                 bufferWrite = myClient.getBufferWrite();
-                try {
-                    bufferWrite.write(userName + "\n");
-                    bufferWrite.flush();
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-
+                
+//                try {
+//
+//                } catch (IOException e1) {
+//                    // TODO Auto-generated catch block
+//                    e1.printStackTrace();
+//                }
+//                
                 if (myClient.getReady()) {
-                    Crossword c = new Crossword(myClient);
-                    ListenThread t = new ListenThread(c, myClient);
-                    t.start();
+
+					try { 
+	                	//send username to server
+	                    bufferWrite.write(userName + "\n");
+	                    bufferWrite.flush();
+	                    
+						Crossword c = new Crossword(myClient);
+						lob lobbyFrame1 = new lob(myClient);
+	                    ListenThread t = new ListenThread(lobbyFrame1,c, myClient);
+	                    t.start();
+	                    lobbyFrame1.turnStartButton(false);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
                     frame.dispose();
                 }
             }
+            }
         });
+        
         btnLogin.setBounds(65, 153, 93, 23);
         frame.getContentPane().add(btnLogin);
 
@@ -103,6 +118,9 @@ public class Login {
                 System.exit(0);
             }
         });
+
+
+
         btnCancel.setBounds(216, 153, 93, 23);
         frame.getContentPane().add(btnCancel);
 
@@ -133,4 +151,11 @@ public class Login {
         frame.getContentPane().add(textField_2);
         textField_2.setColumns(10);
     }
-}
+
+
+		
+	}
+
+   
+
+

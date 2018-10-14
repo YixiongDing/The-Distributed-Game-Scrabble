@@ -9,7 +9,13 @@ package ScrabbleClient;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,58 +24,152 @@ import org.json.simple.parser.ParseException;
 import ScrabbleClient.MyClient;
 
 public class ConnectionToServer {
+
 	private MyClient myClient;
-	private Thread t;
 	private JSONParser parser = new JSONParser();
 	private Crossword cw;
+	private lob lob;
+	public static int createstatus = 0;
+	public static int loginstatus = 0;
+	public static ArrayList <String> userlist;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-	
-	public ConnectionToServer(Crossword cw, MyClient myClient) {
+	public ConnectionToServer(lob lob,Crossword cw, MyClient myClient) {
 		this.cw = cw;
+		this.lob=lob;
 		this.myClient = myClient;
 	}
 
-	
-	public void connectionToServer() throws IOException {
-			String content = new String();
-			while (myClient.getBufferReader() != null) {
-				String message = myClient.getBufferReader().readLine();
+	public void connectionToServer() {
+		//listen the message received from the server
+		while (myClient.getBufferReader() != null) {
+			String message;
+			try {
+				message = myClient.getBufferReader().readLine();
 				System.out.println("Server:" + message);
 				readMsg(message);
+			} catch (Exception e) {
+				new MessageUI("Server is unavailable",myClient.getUserName());
+				break;
 			}
-	}
 
-	//handle the message received from the server
+		}
+	}
 	public void readMsg(String message) {
 		try {
-			//Turn Protocol
+			//handle the message received from the server
 			JSONObject serverJSON = (JSONObject) parser.parse(message);
-			if (serverJSON.containsKey("TURN")) {
+			if (serverJSON.containsKey("CREATESTATUS")) {
+				//Createstatus Protocol
+				createstatus = Integer.parseInt(serverJSON.get("CREATESTATUS").toString());
+				if(createstatus==0) {
+					new MessageUI("Waiting for the server to respond, please try again later.",myClient.getUserName());
+
+				}else if(createstatus==1) {
+					new MessageUI("Create a game room successfully.",myClient.getUserName());
+
+					lob.turnCreateButton(false);
+					lob.turnStartButton(true);
+					lob.inviteButton(true);
+				}else if(createstatus==2) {
+					new MessageUI("There is a game in progress, please try again later.",myClient.getUserName());
+				}
+
+
+
+				System.out.println(createstatus);
+			}
+			else if (serverJSON.containsKey("LOGINSTATUS")) {
+				//Loginstatus Protocol
+				loginstatus = Integer.parseInt(serverJSON.get("LOGINSTATUS").toString());
+				if(loginstatus==0) {
+					new MessageUI("Waiting for the server to respond, please try again later.",myClient.getUserName());
+
+				}else if(loginstatus==1) {
+
+					lob.setlobby(true);
+					new MessageUI("login successfully.",myClient.getUserName());
+				}else if(loginstatus==2) {
+					new MessageUI("Username already exists, please re-enter",myClient.getUserName());
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					System.exit(0);
+
+				}
+
+
+
+				System.out.println(createstatus);
+			}
+			else if (serverJSON.containsKey("INVITED")) {
+				//Invited Protocol
+
+				Invited v = new Invited("     Being invited to a game, join?", myClient);
+				v.setVisible(true);
+				
+				//Invite reply Protocol
+
+			}else if (serverJSON.containsKey("INVITEREPLYYES")) {
+				String user = (String)serverJSON.get("INVITEREPLYYES");
+				new MessageUI("Invite "+user+" successfully",myClient.getUserName());
+
+			}
+			else if (serverJSON.containsKey("INVITEREPLYNO")) {
+				String user = (String)serverJSON.get("INVITEREPLYNO");
+				new MessageUI(user+" refused.",myClient.getUserName());
+
+			}
+			else if (serverJSON.containsKey("DISPLAY")) {
+				//Information display protocol
+				String messages = (String) serverJSON.get("DISPLAY");
+				lob.textappend(sdf.format(new Date())+ "   "+messages+"\n");
+
+			}else if (serverJSON.containsKey("TURN")) {
+				//Turn Protocol
 				cw.setTurnLabel("                   It's " + serverJSON.get("TURN") + "'s turn");
 				if (serverJSON.get("TURN").equals(myClient.getUserName())) {
 					cw.setTurn(true);
-                    Crossword.CrosswordPanel.setColorAll();
-				}
-				//Vote INIT Protocol
+					Crossword.CrosswordPanel.setColorAll();
 
+				}
 			} else if (serverJSON.containsKey("VOTE")) {
+				//Vote INIT Protocol
 				String voteWord = (String) serverJSON.get("VOTE");
 				Vote v = new Vote("     Is \"" + voteWord + "\" a word?", myClient);
 				v.setVisible(true);
 
-				//New Letter Protocol
-
 			} else if (serverJSON.containsKey("COMMAND")) {
+				if (serverJSON.get("COMMAND").equals("START")) {
+					//Start game protocol
+					cw.setcrossword(true);
+				}
 				if (serverJSON.get("COMMAND").equals("NEW")) {
+					//New Letter Protocol
 					JSONObject newLetter = (JSONObject) serverJSON.get("MESSAGE");
 					int index = ((Long) newLetter.get("INDEX")).intValue();
 					String letter = (String) newLetter.get("LETTER");
 					Crossword.CrosswordPanel.textFields.get(index).setText(letter);
 				}
+				if (serverJSON.get("COMMAND").equals("USERLIST")) {
+					//userlist display protocol
+					int count = 0;
+					lob.setuserlist();
+					while(true) {
+						if(serverJSON.containsKey(String.valueOf(count))) { 
+							lob.appenduser((String) serverJSON.get(String.valueOf(count))+"\n");
+							count += 1;
+						}else {
+							break;
+						}
+					}
 
-				// COORD Protocol
 
+				}
 				if (serverJSON.get("COMMAND").equals("COORD")) {
+					// COORD Protocol
 					JSONObject Coord = (JSONObject) serverJSON.get("MESSAGE");
 					int lastX =  ((Long) Coord.get("X1")).intValue();
 					int lastY =  ((Long) Coord.get("Y1")).intValue();
@@ -107,11 +207,13 @@ public class ConnectionToServer {
 							Crossword.CrosswordPanel.textFields.get(index).setBackground(Color.yellow);
 						}
 					}
+
+
 				}
 			}
-			//Scoreboard Protocol
 
 			else if (serverJSON.containsKey("SCOREBOARD")) {
+				//Scoreboard Protocol
 				ArrayList <String> userName_list = new ArrayList<String>();
 				JSONObject a = new JSONObject();
 				a = (JSONObject) serverJSON.get("SCOREBOARD");
@@ -122,10 +224,16 @@ public class ConnectionToServer {
 				}
 				System.out.println(userName_list);
 				Crossword.setScorebd(userName_list);
-			//Game End Protocol
+
+
 			}
 
+
+
 			else if (serverJSON.containsKey("END")) {
+				//Game End Protocol
+				cw.setTurnLabel("                   Game ended");
+
 				ArrayList<String> userName_list = new ArrayList<String>();
 				JSONObject a = new JSONObject();
 				a = (JSONObject) serverJSON.get("END");
@@ -134,6 +242,9 @@ public class ConnectionToServer {
 					userName_list.add("Username: " + key.toString() + ";    Score:" + sc);
 					System.out.println(sc);
 				}
+				Crossword.CrosswordPanel.removeALL();
+				lob.setlobby(true);
+				cw.setVisible(false);
 				System.out.println(userName_list);
 
 				Scoreboard v = new Scoreboard(userName_list);

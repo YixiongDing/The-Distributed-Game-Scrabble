@@ -3,9 +3,7 @@
 // Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
 
 package ScrabbleClient;
-
-
-// this is a prompt window in which some messages received from the server will be displayed.
+// This is the promptwindow where the prompt message is coded.
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -30,12 +28,12 @@ public class PromptWindow extends JFrame implements ActionListener{
 	private static String promptText="Prompt Message";
     private static PromptWindow frame;
 
-
 	/**
 	 * Create the frame.
 	 */
-	public PromptWindow(String a) {
+	public PromptWindow(String a,String user) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setTitle(user + "'s game");
 		setBounds(100, 100, 250, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -46,7 +44,7 @@ public class PromptWindow extends JFrame implements ActionListener{
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
-		
+
 		lblIsA = new JLabel(a);
 		GridBagConstraints gbc_lblIsA = new GridBagConstraints();
 		gbc_lblIsA.gridwidth = 5;
@@ -54,7 +52,7 @@ public class PromptWindow extends JFrame implements ActionListener{
 		gbc_lblIsA.gridx = 2;
 		gbc_lblIsA.gridy = 3;
 		contentPane.add(lblIsA, gbc_lblIsA);
-		
+
 		JButton btnGoBack = new JButton("Go Back");
 		btnGoBack.addActionListener(this);
 		btnGoBack.addMouseListener(new MouseAdapter(){
@@ -64,21 +62,21 @@ public class PromptWindow extends JFrame implements ActionListener{
 
 
         	}
-    				
-    		
-    		
+
+
+
     	});
 		GridBagConstraints gbc_btnYes = new GridBagConstraints();
 		gbc_btnYes.insets = new Insets(30, 50, 5, 5);
 		gbc_btnYes.gridx = 5;
 		gbc_btnYes.gridy = 5;
 		contentPane.add(btnGoBack, gbc_btnYes);
-		
+
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-			
+
 		setEnabled(true);
 		this.dispose();
 	}

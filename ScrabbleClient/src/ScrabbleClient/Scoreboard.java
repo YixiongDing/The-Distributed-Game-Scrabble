@@ -1,10 +1,8 @@
 // Project Name: Distributed System Project 2
 // Team name: Onmyoji
 // Team member: Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu 
-
 package ScrabbleClient;
-//this is a scoreboard window in which the scores received from the server will be displayed.
-
+// This is the window where the scoreboard window is coded.
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -23,7 +21,9 @@ public class Scoreboard extends JFrame {
 
 	private JPanel contentPane;
 
-
+	/**
+	 * Create the frame.
+	 */
 	public Scoreboard(ArrayList<String> toPrint) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -31,17 +31,17 @@ public class Scoreboard extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
+
 		JTextArea txtrScoreboard = new JTextArea();
 		txtrScoreboard.setBackground(Color.ORANGE);
 		txtrScoreboard.setForeground(Color.DARK_GRAY);
 		txtrScoreboard.setFont(new Font("Monospaced", Font.BOLD, 40));
 		txtrScoreboard.setText("SCOREBOARD");
 		contentPane.add(txtrScoreboard, BorderLayout.NORTH);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
-		
+
 		JTextArea txtrUsername = new JTextArea();
 		txtrUsername.setBackground(Color.LIGHT_GRAY);
 		txtrUsername.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -49,7 +49,6 @@ public class Scoreboard extends JFrame {
 		for (String a:toPrint) {
 		    txtrUsername.append(a+"\n");
 		}
-
 		scrollPane.setViewportView(txtrUsername);
 	}
 
