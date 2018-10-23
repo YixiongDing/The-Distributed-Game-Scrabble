@@ -1,6 +1,6 @@
 # The Distributed Game Scrabble
 
-Author: Team Onmyoji(Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu)
+Author: Team Onmyoji (Yixiong Ding, Guangzhe Lan, Sihan Liu, Wuang Shen, Zhenhao Yu)
 Date: 14 October, 2018
 The University of Melbourne 
 
