@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="ScrabbleServer/" kind="src" path=""/>
-	<classpathentry kind="src" path="ScrabbleServer"/>
-	<classpathentry kind="lib" path="/The-Distributed-Game-Scrabble/json-simple-1.1.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
